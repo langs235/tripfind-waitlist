@@ -17,7 +17,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "TripFind",
   icons: {
-    icon: "/logo.png", 
+    icon: "logo.png", 
   },
 };
 
