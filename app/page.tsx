@@ -36,7 +36,7 @@ export default function Home() {
 
   const contactEmail = "info@tripfind.net";
 
-  const instagramUrl = "https://instagram.com/";
+  const instagramUrl = "https://www.instagram.com/tripfind.app?igsh=ZWUwaDQ2d2RhbWlw";
   const whatsappUrl = "https://wa.me/";
 
   const WAITLIST_COUNT = 2143;
