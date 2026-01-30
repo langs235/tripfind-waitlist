@@ -36,8 +36,8 @@ export default function Home() {
 
   const contactEmail = "info@tripfind.net";
 
-  const instagramUrl = "https://www.instagram.com/tripfind.app?igsh=ZWUwaDQ2d2RhbWlw";
-  const whatsappUrl = "https://wa.me/";
+  const instagramUrl =
+    "https://www.instagram.com/tripfind.app?igsh=ZWUwaDQ2d2RhbWlw";
 
   const WAITLIST_COUNT = 2143;
 
@@ -238,7 +238,9 @@ export default function Home() {
   }
 
   return (
-    <main className={`${font.className} min-h-screen bg-white text-black pb-24 sm:pb-0`}>
+    <main
+      className={`${font.className} min-h-screen bg-white text-black pb-24 sm:pb-0`}
+    >
       {/* ✅ Dev Tasks (explicit) */}
       <div className="hidden" aria-hidden="true">
         {/* DEV TASKS:
@@ -267,7 +269,9 @@ export default function Home() {
 
             <div className="leading-tight">
               <div className="font-semibold tracking-tight">TripFind</div>
-              <div className="text-xs text-gray-500">Smarter travel discovery</div>
+              <div className="text-xs text-gray-500">
+                Smarter travel discovery
+              </div>
             </div>
           </div>
 
@@ -306,15 +310,16 @@ export default function Home() {
                 Discover like TikTok. Plan like a pro.
               </span>
               <span className="block">
-                Trip videos → instant plans, personalized to your budget and schedule.
+                Trip videos → instant plans, personalized to your budget and
+                schedule.
               </span>
               <span className="block">No endless searching. No tab-hopping.</span>
             </p>
 
             <div className="mt-5 max-w-xl">
               <span className="inline-flex items-center gap-2 rounded-full border bg-white/70 px-3 py-1 text-xs text-gray-700">
-                ⚡ <span className="font-semibold">Tap-to-Plan™️</span> turns a trip
-                idea into an instant itinerary.
+                ⚡ <span className="font-semibold">Tap-to-Plan™️</span> turns a
+                trip idea into an instant itinerary.
               </span>
             </div>
 
@@ -630,6 +635,7 @@ export default function Home() {
             .
           </p>
 
+          {/* ✅ WhatsApp removed */}
           <div className="mt-4 flex flex-wrap gap-2">
             <a
               href={instagramUrl}
@@ -638,14 +644,6 @@ export default function Home() {
               className="rounded-2xl border bg-white px-4 py-2 text-sm hover:bg-gray-50"
             >
               Instagram
-            </a>
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-2xl border bg-white px-4 py-2 text-sm hover:bg-gray-50"
-            >
-              WhatsApp
             </a>
           </div>
         </div>
@@ -665,7 +663,9 @@ export default function Home() {
 
             <div className="flex flex-col gap-0.5">
               <div>© {year} TripFind</div>
-              <div className="text-xs text-gray-500">Built with ❤️ for travelers.</div>
+              <div className="text-xs text-gray-500">
+                Built with ❤️ for travelers.
+              </div>
             </div>
           </div>
 
