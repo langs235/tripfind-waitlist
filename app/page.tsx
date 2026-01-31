@@ -69,6 +69,7 @@ export default function Home() {
 
   const [quoteIndex, setQuoteIndex] = useState(0);
 
+  // ✅ UPDATED: insert preview-5.jpg as 3rd, move old 3rd to 4th (last)
   const slides: Slide[] = useMemo(
     () => [
       {
@@ -84,6 +85,14 @@ export default function Home() {
         alt: "TripFind preview - tap to plan",
         label: "Tap Plan",
         caption: "Tap Plan",
+        fit: "contain",
+        scale: 1.1,
+      },
+      {
+        src: "/preview-5.jpg",
+        alt: "TripFind preview - new flow",
+        label: "Trip ready",
+        caption: "Compare & Book",
         fit: "contain",
         scale: 1.1,
       },
@@ -622,10 +631,7 @@ export default function Home() {
 
           <div className="mt-6 space-y-3">
             {faqs.map((f) => (
-              <details
-                key={f.q}
-                className="group rounded-2xl border bg-white p-4"
-              >
+              <details key={f.q} className="group rounded-2xl border bg-white p-4">
                 <summary className="cursor-pointer list-none font-semibold text-gray-900 flex items-center justify-between">
                   <span>{f.q}</span>
                   <span className="ml-3 text-gray-500 group-open:rotate-45 transition-transform">
@@ -650,10 +656,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section
-        id="contact"
-        className="mx-auto max-w-6xl px-6 pb-14 scroll-mt-24"
-      >
+      <section id="contact" className="mx-auto max-w-6xl px-6 pb-14 scroll-mt-24">
         <div className="rounded-3xl border bg-white/70 p-6 shadow-sm backdrop-blur">
           <h3 className="text-lg font-semibold">Contact</h3>
           <p className="mt-2 text-sm text-gray-600">
