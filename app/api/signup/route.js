@@ -10,10 +10,15 @@ function isValidEmail(email) {
 export async function POST(req) {
   try {
     const body = await req.json();
+
     const email = (body?.email || "").trim().toLowerCase();
+    const origin = body?.origin || null; // ✅ NEW: save "Europe" / "US" / "Other"
 
     if (!isValidEmail(email)) {
-      return NextResponse.json({ error: "Please enter a valid email." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Please enter a valid email." },
+        { status: 400 }
+      );
     }
 
     const supabaseUrl = process.env.SUPABASE_URL;
@@ -28,14 +33,22 @@ export async function POST(req) {
 
     const supabase = createClient(supabaseUrl, serviceKey);
 
-    const { error } = await supabase.from("pre_signups").insert([{ email }]);
+    const { error } = await supabase
+      .from("pre_signups")
+      .insert([{ email, origin }]); // ✅ NEW: insert origin too
 
     if (error) {
       // duplicate email
       if (error.code === "23505") {
-        return NextResponse.json({ ok: true, message: "You're already on the waitlist ✅" });
+        return NextResponse.json({
+          ok: true,
+          message: "You're already on the waitlist ✅",
+        });
       }
-      return NextResponse.json({ error: `Supabase error: ${error.message}` }, { status: 500 });
+      return NextResponse.json(
+        { error: `Supabase error: ${error.message}` },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({ ok: true, message: "You're on the waitlist! 🎉" });
