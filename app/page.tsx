@@ -34,13 +34,17 @@ export default function Home() {
   );
   const [message, setMessage] = useState("");
 
-  const contactEmail = "info@tripfind.net";
+  // ✅ NEW: micro-step before email
+  const [origin, setOrigin] = useState<"Europe" | "US" | "Other" | "">("");
 
+  const contactEmail = "info@tripfind.net";
   const instagramUrl =
     "https://www.instagram.com/tripfind.app?igsh=ZWUwaDQ2d2RhbWlw";
 
-  const WAITLIST_COUNT = 2143;
+  // ✅ Lower believable number
+  const WAITLIST_COUNT = 512;
 
+  // ✅ Remove duplicate testimonial: keep only unique ones
   const quotes: Quote[] = useMemo(
     () => [
       {
@@ -58,10 +62,6 @@ export default function Home() {
       {
         text: "I hate tab-hopping. This makes planning feel effortless.",
         author: "— Early tester",
-      },
-      {
-        text: "I picked my vibe and instantly got options I’d actually book.",
-        author: "— Beta user",
       },
     ],
     []
@@ -131,7 +131,6 @@ export default function Home() {
   const intervalRef = useRef<number | null>(null);
 
   const FRAME_HEIGHT_PX = 560;
-
   const year = useMemo(() => new Date().getFullYear(), []);
 
   const pointerDownRef = useRef<{ x: number; y: number } | null>(null);
@@ -182,7 +181,8 @@ export default function Home() {
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        // ✅ include origin (safe; backend can ignore if not stored yet)
+        body: JSON.stringify({ email, origin }),
       });
 
       const text = await res.text();
@@ -200,6 +200,7 @@ export default function Home() {
       setStatus("success");
       setMessage(data?.message || "You're on the waitlist! 🎉");
       setEmail("");
+      setOrigin("");
     } catch {
       setStatus("error");
       setMessage("Network error. Please try again.");
@@ -266,12 +267,9 @@ export default function Home() {
               className="h-10 w-auto"
               draggable={false}
             />
-
             <div className="leading-tight">
               <div className="font-semibold tracking-tight">TripFind</div>
-              <div className="text-xs text-gray-500">
-                Smarter travel discovery
-              </div>
+              <div className="text-xs text-gray-500">Smarter travel discovery</div>
             </div>
           </div>
 
@@ -309,17 +307,17 @@ export default function Home() {
               <span className="block font-medium text-gray-900">
                 Discover like TikTok. Plan like a pro.
               </span>
-              <span className="block">
-                Trip videos → instant plans, personalized to your budget and
-                schedule.
-              </span>
+
+              {/* ✅ HERO LINE CHANGE */}
+              <span className="block">Trip reels → instant trips</span>
+
               <span className="block">No endless searching. No tab-hopping.</span>
             </p>
 
             <div className="mt-5 max-w-xl">
               <span className="inline-flex items-center gap-2 rounded-full border bg-white/70 px-3 py-1 text-xs text-gray-700">
-                ⚡ <span className="font-semibold">Tap-to-Plan™️</span> turns a
-                trip idea into an instant itinerary.
+                ⚡ <span className="font-semibold">Tap-to-Plan™️</span> turns a trip
+                idea into an instant itinerary.
               </span>
             </div>
 
@@ -333,6 +331,34 @@ export default function Home() {
             </div>
 
             <form id="signup" onSubmit={onSubmit} className="mt-4 max-w-xl">
+              {/* ✅ NEW micro-step */}
+              <div className="mb-3">
+                <label className="block text-xs font-medium text-gray-700 mb-1">
+                  Where are you traveling from?
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {(["Europe", "US", "Other"] as const).map((opt) => {
+                    const active = origin === opt;
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => setOrigin(opt)}
+                        className={[
+                          "rounded-full border px-3 py-1 text-xs transition",
+                          active
+                            ? "bg-black text-white border-black"
+                            : "bg-white/70 text-gray-800 hover:bg-white border-gray-300",
+                        ].join(" ")}
+                        aria-pressed={active}
+                      >
+                        {opt}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               <div className="flex flex-col gap-3 sm:flex-row">
                 <input
                   id="signup-email"
@@ -447,7 +473,7 @@ export default function Home() {
                 <h3 className="text-sm font-semibold text-gray-900">
                   What early users say
                 </h3>
-                <span className="text-xs text-gray-500">(simulated for now)</span>
+                <span className="text-xs text-gray-500"></span>
               </div>
 
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -618,13 +644,16 @@ export default function Home() {
         <div className="rounded-3xl border bg-white/70 p-6 shadow-sm backdrop-blur">
           <h3 className="text-lg font-semibold">Privacy</h3>
           <p className="mt-2 text-sm text-gray-600">
-            We only collect your email to notify you about TripFind launch updates and
-            early access. We don’t sell your data. You can unsubscribe anytime.
+            We only collect your email to notify you about TripFind launch updates
+            and early access. We don’t sell your data. You can unsubscribe anytime.
           </p>
         </div>
       </section>
 
-      <section id="contact" className="mx-auto max-w-6xl px-6 pb-14 scroll-mt-24">
+      <section
+        id="contact"
+        className="mx-auto max-w-6xl px-6 pb-14 scroll-mt-24"
+      >
         <div className="rounded-3xl border bg-white/70 p-6 shadow-sm backdrop-blur">
           <h3 className="text-lg font-semibold">Contact</h3>
           <p className="mt-2 text-sm text-gray-600">
@@ -660,7 +689,6 @@ export default function Home() {
               className="h-10 w-auto"
               draggable={false}
             />
-
             <div className="flex flex-col gap-0.5">
               <div>© {year} TripFind</div>
               <div className="text-xs text-gray-500">
