@@ -206,6 +206,17 @@ export default function Home() {
         return;
       }
 
+      // ✅ Call Supabase Edge Function to send welcome email
+try {
+  await fetch("https://YOUR_SUPABASE_PROJECT.functions.supabase.co/send_welcome_email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, name: "" }), // optional: include name if you collect it
+  });
+} catch (err) {
+  console.error("Failed to send welcome email:", err);
+}
+
       setStatus("success");
       setMessage(data?.message || "You're on the waitlist! 🎉");
       setEmail("");
