@@ -314,13 +314,13 @@ export default function Home() {
 
             <p className="mt-4 max-w-xl text-lg text-gray-600">
               <span className="block font-medium text-gray-900">
-                Discover like TikTok. Plan like a pro.
+                Discover travel inspiration and turn it into a complete plan instantly.
               </span>
 
               {/* ✅ HERO LINE CHANGE */}
-              <span className="block">Trip reels → instant trips</span>
+              <span className="block">From inspiration to itinerary, all in one flow.</span>
 
-              <span className="block">No endless searching. No tab-hopping.</span>
+              <span className="block">No endless searching. No tab-hopping. Just trips that make sense.</span>
             </p>
 
             <div className="mt-5 max-w-xl">
