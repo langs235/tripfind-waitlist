@@ -13,7 +13,7 @@ export async function POST(req) {
     const body = await req.json();
 
     const email = (body?.email || "").trim().toLowerCase();
-    const origin = body?.origin || null;
+    const origin = body?.origin || null; // ✅ NEW: save "Europe" / "US" / "Other"
 
     if (!isValidEmail(email)) {
       return NextResponse.json(
@@ -36,9 +36,10 @@ export async function POST(req) {
 
     const { error } = await supabase
       .from("pre_signups")
-      .insert([{ email, origin }]);
+      .insert([{ email, origin }]); // ✅ NEW: insert origin too
 
     if (error) {
+      // duplicate email
       if (error.code === "23505") {
         return NextResponse.json({
           ok: true,
@@ -59,66 +60,12 @@ export async function POST(req) {
           to: [email],
           subject: "Welcome to TripFind 🎉",
           html: `
-            <div style="font-family:system-ui,Arial,sans-serif;line-height:1.6;color:#111">
-              <h2>Welcome to TripFind 🎉</h2>
-
-              <p>
-                You’re officially on the TripFind waitlist — thanks for joining early.
-              </p>
-
-              <p>
-                As a thank-you, you’ve unlocked
-                <strong>1 month of TripFind Premium — completely free</strong>.
-              </p>
-
-              <p>
-                Your Premium access will become available once TripFind launches.
-                We’ll notify you by email as soon as everything is live.
-              </p>
-
-              <p>
-                With Premium, you’ll be able to discover better trips,
-                get smarter recommendations, and access exclusive features.
-              </p>
-
-              <p>-</p>
-
-              <p>
-                Until then, follow us for updates and sneak peeks.
-              </p>
-
-              <div style="margin-top:12px">
-                <a
-                  href="https://www.instagram.com/tripfind.app?igsh=ZWUwaDQ2d2RhbWlw"
-                  target="_blank"
-                  style="margin-right:12px;text-decoration:none"
-                >
-                  <img
-                    src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.png"
-                    alt="Instagram"
-                    width="22"
-                    height="22"
-                    style="vertical-align:middle"
-                  />
-                </a>
-
-                <a
-                  href="https://www.tiktok.com/@tripfind.app?_r=1&_t=ZN-93okj5KIqKU"
-                  target="_blank"
-                  style="text-decoration:none"
-                >
-                  <img
-                    src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.png"
-                    alt="TikTok"
-                    width="22"
-                    height="22"
-                    style="vertical-align:middle"
-                  />
-                </a>
-              </div>
-
-              <p style="margin-top:28px;font-size:14px;color:#666">
-                If you didn’t sign up for TripFind, you can safely ignore this email.
+            <div style="font-family:system-ui,Arial,sans-serif;line-height:1.6">
+              <h2>You're on the waitlist!</h2>
+              <p>Thanks for signing up for <strong>TripFind</strong>.</p>
+              <p>We'll let you know as soon as we launch 🚀</p>
+              <p style="font-size:14px;color:#666">
+                If you didn’t sign up, you can safely ignore this email.
               </p>
             </div>
           `,
