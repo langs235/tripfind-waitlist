@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { resend } from "@/app/lib/resend";
 
 function isValidEmail(email) {
   return typeof email === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -51,7 +52,33 @@ export async function POST(req) {
       );
     }
 
-    return NextResponse.json({ ok: true, message: "You're on the waitlist! 🎉" });
+    // ✅ Send welcome email AFTER successful insert
+    if (process.env.RESEND_API_KEY && process.env.RESEND_FROM) {
+      try {
+        await resend.emails.send({
+          from: process.env.RESEND_FROM,
+          to: [email],
+          subject: "Welcome to TripFind 🎉",
+          html: `
+            <div style="font-family:system-ui,Arial,sans-serif;line-height:1.6">
+              <h2>You're on the waitlist!</h2>
+              <p>Thanks for signing up for <strong>TripFind</strong>.</p>
+              <p>We'll let you know as soon as we launch 🚀</p>
+              <p style="font-size:14px;color:#666">
+                If you didn’t sign up, you can safely ignore this email.
+              </p>
+            </div>
+          `,
+        });
+      } catch (err) {
+        console.error("Resend email failed:", err);
+      }
+    }
+
+    return NextResponse.json({
+      ok: true,
+      message: "You're on the waitlist! 🎉",
+    });
   } catch {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
