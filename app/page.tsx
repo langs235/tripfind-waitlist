@@ -331,7 +331,7 @@ try {
               {/* ✅ HERO LINE CHANGE */}
               <span className="block">From inspiration to itinerary, all in one flow.</span>
 
-              <span className="block">No endless searching. No tab-hopping. Just trips that make sense.</span>
+              <span className="block">No endless searching. Just trips that make sense.</span>
             </p>
 
             <div className="mt-5 max-w-xl">
