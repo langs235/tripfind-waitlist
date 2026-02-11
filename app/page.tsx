@@ -156,6 +156,7 @@ export default function Home() {
   const [index, setIndex] = useState(0);
   const [animDir, setAnimDir] = useState<"next" | "prev">("next");
   const [isPaused, setIsPaused] = useState(false);
+  const [slideAnimKey, setSlideAnimKey] = useState(0); // ✅ triggers animation on slide change
   const intervalRef = useRef<number | null>(null);
 
   const FRAME_HEIGHT_PX = 560;
@@ -167,16 +168,21 @@ export default function Home() {
     if (i === index) return;
     setAnimDir(i > index ? "next" : "prev");
     setIndex(i);
+    setSlideAnimKey((prev) => prev + 1); // ✅ triggers animation
   }
 
   function next() {
     setAnimDir("next");
     setIndex((prev) => (prev + 1) % slides.length);
+    setSlideAnimKey((prev) => prev + 1); // ✅ triggers animation
+
   }
 
   function prev() {
     setAnimDir("prev");
     setIndex((prev) => (prev - 1 + slides.length) % slides.length);
+    setSlideAnimKey((prev) => prev + 1); // ✅ triggers animation
+
   }
 
   useEffect(() => {
