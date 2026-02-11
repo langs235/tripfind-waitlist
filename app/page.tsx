@@ -732,6 +732,22 @@ export default function Home() {
 
       {/* Animations */}
       <style jsx global>{`
+      @keyframes highlightInput {
+  0% {
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(0, 128, 255, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0);
+  }
+}
+
+.highlight-email {
+  animation: highlightInput 1s ease-in-out;
+}
+
         html {
           scrollbar-gutter: stable;
           scroll-behavior: smooth;
