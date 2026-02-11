@@ -54,17 +54,27 @@ export async function POST(req) {
     }
 
     // ✅ Send welcome email AFTER successful insert
-    if (process.env.RESEND_API_KEY && process.env.RESEND_FROM) {
+if (process.env.RESEND_API_KEY && process.env.RESEND_FROM) {
   try {
     await resend.emails.send({
       from: process.env.RESEND_FROM,
       to: [email],
-      subject: "You’re in - Free Premium included",
+      subject: "Early access confirmed",
       html: `
-        <div style="font-family:system-ui,Arial,sans-serif;line-height:1.6">
-          <h2>You're officially on the TripFind waitlist!</h2>
+        <!-- Preview Text -->
+        <div style="display:none;max-height:0;overflow:hidden;opacity:0;">
+          Your free Premium month is secured.
+        </div>
 
-          <p>Thanks for signing up for <strong>TripFind</strong>.</p>
+        <div style="font-family:system-ui,Arial,sans-serif;line-height:1.6;color:#111;">
+          
+          <h2 style="margin-bottom:16px;">
+            You're officially on the TripFind waitlist
+          </h2>
+
+          <p>
+            Thanks for signing up for <strong>TripFind</strong>.
+          </p>
 
           <p>
             We’re building a smarter way to plan trips - no endless tabs, no overwhelm,
@@ -72,8 +82,8 @@ export async function POST(req) {
           </p>
 
           <p>
-            As an early subscriber, you’ll receive <strong>one month of Premium completely free</strong>
-            when we launch.
+            As an early subscriber, you’ll receive 
+            <strong>one month of Premium completely free</strong> when we launch.
           </p>
 
           <p>
@@ -85,18 +95,23 @@ export async function POST(req) {
             and more personal - and we can’t wait to share it with you.
           </p>
 
-          <p style="font-size:14px;color:#666;margin-top:20px;">
+          <p style="font-size:14px;color:#666;margin-top:24px;">
             If you didn’t sign up for TripFind, you can safely ignore this email.
           </p>
 
-          <p style="margin-top:24px;">
+          <p style="margin-top:32px;">
             <strong>The TripFind Team</strong><br/>
             tripfind.net
           </p>
+
         </div>
       `,
     });
   } catch (err) {
+    console.error("Resend email failed:", err);
+  }
+}
+ catch (err) {
     console.error("Resend email failed:", err);
   }
 }
