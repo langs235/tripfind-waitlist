@@ -46,7 +46,7 @@ export default function Home() {
       { 
         src: "/preview-2.png", 
         alt: "Compare", 
-        caption: "2. Compare options at a glance" 
+        caption: "2. Explore better alternatives" 
       },
       { 
         src: "/preview-5.jpg", 
@@ -134,7 +134,7 @@ export default function Home() {
       <header className="mx-auto max-w-6xl px-6 py-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="TripFind" className="h-10 w-auto" />
+            <img src="/logo.png" alt="TripFind logo" className="h-10 w-auto" />
             <div className="leading-tight">
               <div className="font-bold tracking-tight">TripFind</div>
               <div className="text-[10px] uppercase tracking-widest text-gray-400">Beta Access</div>
