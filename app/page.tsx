@@ -36,28 +36,27 @@ export default function Home() {
   const instagramUrl = "https://www.instagram.com/tripfind.app?igsh=ZWUwaDQ2d2RhbWlw";
   const WAITLIST_COUNT = 512;
 
-  // Swapped captions for slides 2 and 3 as requested
   const slides: Slide[] = useMemo(
     () => [
       { 
         src: "/preview-1.jpg", 
         alt: "Discover", 
-        caption: "1. Discover hidden gems" 
+        caption: "1. Browse hand-picked gems" 
       },
       { 
         src: "/preview-2.png", 
         alt: "Compare", 
-        caption: "2. Smart comparison view" 
+        caption: "2. Compare options at a glance" 
       },
       { 
         src: "/preview-5.jpg", 
         alt: "Tap Plan", 
-        caption: "3. Tap-to-Plan™ instantly" 
+        caption: "3. One tap, complete itinerary" 
       },
       { 
         src: "/preview-3.jpg", 
         alt: "Ready", 
-        caption: "4. Your itinerary is ready" 
+        caption: "4. Your trip is ready to go" 
       },
     ],
     []
@@ -151,16 +150,16 @@ export default function Home() {
         <div className="grid gap-12 lg:grid-cols-[1fr_400px]">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-black/5 bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-wider shadow-sm">
-              <span className="text-emerald-500">●</span> Now accepting early users
+              <span className="text-emerald-500">●</span> Limited Beta Open
             </div>
             
             <h1 className="mt-8 text-5xl font-extrabold leading-[1.1] tracking-tight sm:text-6xl">
-              Plan trips you’ll <br />
-              <span className="text-gray-400 italic">actually</span> love.
+              Travel planning <br />
+              <span className="text-gray-400 italic">without</span> the tabs.
             </h1>
             
             <p className="mt-6 max-w-lg text-xl text-gray-600 leading-relaxed">
-              Stop tab-hopping. Get personalized itineraries and smart comparisons in seconds with <b>Tap-to-Plan™</b>.
+              Stop endless searching. Get personalized itineraries and smart comparisons in seconds with <b>Tap-to-Plan™</b>.
             </p>
 
             <form id="signup" onSubmit={onSubmit} className="mt-10 max-w-xl">
@@ -178,7 +177,7 @@ export default function Home() {
                   disabled={status === "loading"}
                   className="rounded-2xl bg-black px-8 py-4 font-bold text-white shadow-lg hover:bg-gray-900 transition-all active:scale-95"
                 >
-                  {status === "loading" ? "..." : "Get Free Month"}
+                  {status === "loading" ? "..." : "Claim Free Month"}
                 </button>
               </div>
 
