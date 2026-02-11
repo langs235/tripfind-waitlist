@@ -38,23 +38,20 @@ export default function Home() {
   const [origin, setOrigin] = useState<"Europe" | "US" | "Other" | "">("");
 
   useEffect(() => {
-  if (!origin) return;
+    if (!origin) return;
 
-  const input = document.getElementById("signup-email");
-  if (!input) return;
+    const input = document.getElementById("signup-email");
+    if (!input) return;
 
-  // Remove class to reset animation
-  input.classList.remove("highlight-email");
+    // Remove class to reset animation
+    input.classList.remove("highlight-email");
 
-  // Trigger reflow
-  void input.offsetWidth;
+    // Trigger reflow
+    void input.offsetWidth;
 
-  // Add class again
-  input.classList.add("highlight-email");
-}, [origin]);
-
-
-  
+    // Add class again
+    input.classList.add("highlight-email");
+  }, [origin]);
 
   const contactEmail = "info@tripfind.net";
   const instagramUrl =
@@ -175,14 +172,12 @@ export default function Home() {
     setAnimDir("next");
     setIndex((prev) => (prev + 1) % slides.length);
     setSlideAnimKey((prev) => prev + 1); // ✅ triggers animation
-
   }
 
   function prev() {
     setAnimDir("prev");
     setIndex((prev) => (prev - 1 + slides.length) % slides.length);
     setSlideAnimKey((prev) => prev + 1); // ✅ triggers animation
-
   }
 
   useEffect(() => {
@@ -245,7 +240,8 @@ export default function Home() {
     const el = document.getElementById("signup-email");
     if (el) (el as HTMLInputElement).focus();
     const section = document.getElementById("signup");
-    if (section) section.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (section)
+      section.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
   const active = slides[index];
@@ -303,7 +299,9 @@ export default function Home() {
             />
             <div className="leading-tight">
               <div className="font-semibold tracking-tight">TripFind</div>
-              <div className="text-xs text-gray-500">Smarter travel discovery</div>
+              <div className="text-xs text-gray-500">
+                Smarter travel discovery
+              </div>
             </div>
           </div>
 
@@ -334,25 +332,26 @@ export default function Home() {
             </div>
 
             <h1 className="mt-6 max-w-xl text-4xl font-bold tracking-tight sm:text-5xl">
-  Plan trips you’ll actually love — in seconds.
-</h1>
-
+              Plan trips you’ll actually love — in seconds.
+            </h1>
 
             <p className="mt-4 max-w-xl text-lg text-gray-600">
-  <span className="block font-medium text-gray-900">
-    Discover travel inspiration and turn it into a complete plan instantly.
-  </span>
-
-  <span className="block">Stress-free planning, from idea to itinerary.</span>
-
-  <span className="block">No endless searching — just trips that fit you.</span>
-</p>
-
+              <span className="block font-medium text-gray-900">
+                Discover travel inspiration and turn it into a complete plan
+                instantly.
+              </span>
+              <span className="block">
+                Stress-free planning, from idea to itinerary.
+              </span>
+              <span className="block">
+                No endless searching — just trips that fit you.
+              </span>
+            </p>
 
             <div className="mt-5 max-w-xl">
               <span className="inline-flex items-center gap-2 rounded-full border bg-white/70 px-3 py-1 text-xs text-gray-700">
-                ⚡ <span className="font-semibold">Tap-to-Plan™️</span> turns a trip
-                idea into an instant itinerary.
+                ⚡ <span className="font-semibold">Tap-to-Plan™️</span> turns a
+                trip idea into an instant itinerary.
               </span>
             </div>
 
@@ -396,33 +395,32 @@ export default function Home() {
 
               <div className="flex flex-col gap-3 sm:flex-row">
                 <input
-  id="signup-email"
-  type="email"
-  required
-  disabled={!origin} // disabled until origin is selected
-  value={email}
-  onChange={(e) => setEmail(e.target.value)}
-  placeholder={
-    origin
-      ? "Enter your email for early access"
-      : "Select your origin first"
-  }
-  className={[
-  "w-full rounded-2xl border bg-white/90 px-4 py-3 outline-none backdrop-blur focus:ring-2 disabled:opacity-50",
-  origin ? "highlight-email" : "",
-].join(" ")}
-
-/>
-
+                  id="signup-email"
+                  type="email"
+                  required
+                  disabled={!origin} // disabled until origin is selected
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={
+                    origin
+                      ? "Enter your email for early access"
+                      : "Select your origin first"
+                  }
+                  className={[
+                    "w-full rounded-2xl border bg-white/90 px-4 py-3 outline-none backdrop-blur focus:ring-2 disabled:opacity-50",
+                    origin ? "highlight-email" : "",
+                  ].join(" ")}
+                />
 
                 <button
-  type="submit"
-  disabled={status === "loading"}
-  className="rounded-2xl bg-black px-5 py-3 text-white disabled:opacity-60 hover:opacity-90"
->
-  {status === "loading" ? "Joining..." : "Reserve my free Premium month"}
-</button>
-
+                  type="submit"
+                  disabled={status === "loading"}
+                  className="rounded-2xl bg-black px-5 py-3 text-white disabled:opacity-60 hover:opacity-90"
+                >
+                  {status === "loading"
+                    ? "Joining..."
+                    : "Reserve my free Premium month"}
+                </button>
               </div>
 
               <div className="mt-3">
@@ -465,7 +463,9 @@ export default function Home() {
                   </div>
                   <p className="mt-2 text-sm text-gray-700">
                     <span className="font-semibold">Pick your vibe</span>{" "}
-                    <span className="text-gray-600">Budget, days, interests.</span>
+                    <span className="text-gray-600">
+                      Budget, days, interests.
+                    </span>
                   </p>
                 </div>
 
@@ -508,8 +508,8 @@ export default function Home() {
               </div>
 
               <div className="mt-4 rounded-2xl border bg-white/70 px-4 py-3 text-sm text-gray-700">
-                🌍 Powered by global inventory partners across flights, stays, and
-                experiences.
+                🌍 Powered by global inventory partners across flights, stays,
+                and experiences.
               </div>
             </div>
 
@@ -588,69 +588,69 @@ export default function Home() {
               <div className="relative rounded-2xl border bg-white p-2">
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-16 rounded-2xl bg-gradient-to-b from-black/10 to-transparent" />
 
-              <div
-  className="relative overflow-hidden rounded-xl bg-gradient-to-b from-amber-50 via-sky-50 to-white w-full touch-pan-y select-none"
-  style={{ height: FRAME_HEIGHT_PX }}
-  onPointerDown={onPointerDown}
-  onPointerUp={onPointerUp}
->
-  <img
-    key={active.src}
-    src={active.src}
-    alt={active.alt}
-    draggable={false}
-    className={[
-      "absolute inset-0 h-full w-full",
-      fitClass,
-      "will-change-transform",
-      animDir === "next"
-        ? "animate-slideInFromRight"
-        : "animate-slideInFromLeft",
-    ].join(" ")}
-    style={{ transform: `scale(${scale})` }}
-  />
+                <div
+                  className="relative overflow-hidden rounded-xl bg-gradient-to-b from-amber-50 via-sky-50 to-white w-full touch-pan-y select-none"
+                  style={{ height: FRAME_HEIGHT_PX }}
+                  onPointerDown={onPointerDown}
+                  onPointerUp={onPointerUp}
+                >
+                  <img
+                    key={active.src}
+                    src={active.src}
+                    alt={active.alt}
+                    draggable={false}
+                    className={[
+                      "absolute inset-0 h-full w-full",
+                      fitClass,
+                      "will-change-transform",
+                      animDir === "next"
+                        ? "animate-slideInFromRight"
+                        : "animate-slideInFromLeft",
+                    ].join(" ")}
+                    style={{ transform: `scale(${scale})` }}
+                  />
 
-  {/* ✅ Animated tagline + CTA */}
-  <div key={slideAnimKey}>
-    <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded-md text-sm sm:text-base animate-fadeSlideIn">
-      Plan your weekend in 3 taps.
-    </div>
-    <a
-      href="#signup"
-      className="absolute top-1/2 right-6 -translate-y-1/2 rounded-2xl bg-black px-5 py-3 text-white text-sm sm:text-base shadow-lg hover:opacity-90 hidden lg:inline-block animate-fadeSlideIn"
-    >
-      Join waitlist
-    </a>
-  </div>
-</div>  {/* This closes the relative overflow-hidden wrapper */}
+                  {/* ✅ Animated tagline + CTA */}
+                  <div key={slideAnimKey}>
+                    <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded-md text-sm sm:text-base animate-fadeSlideIn">
+                      Plan your weekend in 3 taps.
+                    </div>
+                    <a
+                      href="#signup"
+                      className="absolute top-1/2 right-6 -translate-y-1/2 rounded-2xl bg-black px-5 py-3 text-white text-sm sm:text-base shadow-lg hover:opacity-90 hidden lg:inline-block animate-fadeSlideIn"
+                    >
+                      Join waitlist
+                    </a>
+                  </div>
+                </div>{" "}
+                {/* This closes the relative overflow-hidden wrapper */}
+                <div className="mt-4 flex items-center justify-between">
+                  <div className="flex gap-2">
+                    {slides.map((s, i) => (
+                      <button
+                        key={s.src}
+                        type="button"
+                        onClick={() => goTo(i)}
+                        aria-label={`Go to slide ${i + 1}`}
+                        className={[
+                          "h-2.5 w-2.5 rounded-full border transition-all",
+                          i === index
+                            ? "bg-black border-black w-7"
+                            : "bg-white border-gray-300 hover:bg-gray-50",
+                        ].join(" ")}
+                      />
+                    ))}
+                  </div>
 
-
-
-              <div className="mt-4 flex items-center justify-between">
-                <div className="flex gap-2">
-                  {slides.map((s, i) => (
-                    <button
-                      key={s.src}
-                      type="button"
-                      onClick={() => goTo(i)}
-                      aria-label={`Go to slide ${i + 1}`}
-                      className={[
-                        "h-2.5 w-2.5 rounded-full border transition-all",
-                        i === index
-                          ? "bg-black border-black w-7"
-                          : "bg-white border-gray-300 hover:bg-gray-50",
-                      ].join(" ")}
-                    />
-                  ))}
-                </div>
-
-                <div className="text-xs font-semibold tracking-tight text-gray-900">
-                  {active.caption ?? ""}
+                  <div className="text-xs font-semibold tracking-tight text-gray-900">
+                    {active.caption ?? ""}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </section>
 
       {/* Why TripFind */}
       <section className="mx-auto max-w-6xl px-6 pb-14">
@@ -681,7 +681,10 @@ export default function Home() {
 
           <div className="mt-6 space-y-3">
             {faqs.map((f) => (
-              <details key={f.q} className="group rounded-2xl border bg-white p-4">
+              <details
+                key={f.q}
+                className="group rounded-2xl border bg-white p-4"
+              >
                 <summary className="cursor-pointer list-none font-semibold text-gray-900 flex items-center justify-between">
                   <span>{f.q}</span>
                   <span className="ml-3 text-gray-500 group-open:rotate-45 transition-transform">
@@ -700,13 +703,17 @@ export default function Home() {
         <div className="rounded-3xl border bg-white/70 p-6 shadow-sm backdrop-blur">
           <h3 className="text-lg font-semibold">Privacy</h3>
           <p className="mt-2 text-sm text-gray-600">
-            We only collect your email to notify you about TripFind launch updates
-            and early access. We don’t sell your data. You can unsubscribe anytime.
+            We only collect your email to notify you about TripFind launch
+            updates and early access. We don’t sell your data. You can
+            unsubscribe anytime.
           </p>
         </div>
       </section>
 
-      <section id="contact" className="mx-auto max-w-6xl px-6 pb-14 scroll-mt-24">
+      <section
+        id="contact"
+        className="mx-auto max-w-6xl px-6 pb-14 scroll-mt-24"
+      >
         <div className="rounded-3xl border bg-white/70 p-6 shadow-sm backdrop-blur">
           <h3 className="text-lg font-semibold">Contact</h3>
           <p className="mt-2 text-sm text-gray-600">
@@ -780,36 +787,36 @@ export default function Home() {
 
       {/* Animations */}
       <style jsx global>{`
-      @keyframes fadeSlideIn {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+        @keyframes fadeSlideIn {
+          0% {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
 
-.animate-fadeSlideIn {
-  animation: fadeSlideIn 0.5s ease-out;
-}
+        .animate-fadeSlideIn {
+          animation: fadeSlideIn 0.5s ease-out;
+        }
 
-      @keyframes highlightInput {
-  0% {
-    box-shadow: 0 0 0px rgba(0, 0, 0, 0);
-  }
-  50% {
-    box-shadow: 0 0 10px rgba(0, 128, 255, 0.7);
-  }
-  100% {
-    box-shadow: 0 0 0px rgba(0, 0, 0, 0);
-  }
-}
+        @keyframes highlightInput {
+          0% {
+            box-shadow: 0 0 0px rgba(0, 0, 0, 0);
+          }
+          50% {
+            box-shadow: 0 0 10px rgba(0, 128, 255, 0.7);
+          }
+          100% {
+            box-shadow: 0 0 0px rgba(0, 0, 0, 0);
+          }
+        }
 
-.highlight-email {
-  animation: highlightInput 1s ease-in-out;
-}
+        .highlight-email {
+          animation: highlightInput 1s ease-in-out;
+        }
 
         html {
           scrollbar-gutter: stable;
