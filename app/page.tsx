@@ -651,7 +651,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
 
       {/* Why TripFind */}
       <section className="mx-auto max-w-6xl px-6 pb-14">
