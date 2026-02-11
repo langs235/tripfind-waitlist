@@ -55,26 +55,52 @@ export async function POST(req) {
 
     // ✅ Send welcome email AFTER successful insert
     if (process.env.RESEND_API_KEY && process.env.RESEND_FROM) {
-      try {
-        await resend.emails.send({
-          from: process.env.RESEND_FROM,
-          to: [email],
-          subject: "Welcome to TripFind 🎉",
-          html: `
-            <div style="font-family:system-ui,Arial,sans-serif;line-height:1.6">
-              <h2>You're on the waitlist!</h2>
-              <p>Thanks for signing up for <strong>TripFind</strong>.</p>
-              <p>We'll let you know as soon as we launch 🚀</p>
-              <p style="font-size:14px;color:#666">
-                If you didn’t sign up, you can safely ignore this email.
-              </p>
-            </div>
-          `,
-        });
-      } catch (err) {
-        console.error("Resend email failed:", err);
-      }
-    }
+  try {
+    await resend.emails.send({
+      from: process.env.RESEND_FROM,
+      to: [email],
+      subject: "Your smarter trips starts with us",
+      html: `
+        <div style="font-family:system-ui,Arial,sans-serif;line-height:1.6">
+          <h2>You're officially on the TripFind waitlist!</h2>
+
+          <p>Thanks for signing up for <strong>TripFind</strong>.</p>
+
+          <p>
+            We’re building a smarter way to plan trips - no endless tabs, no overwhelm,
+            just personalized travel in seconds.
+          </p>
+
+          <p>
+            As an early subscriber, you’ll receive <strong>one month of Premium completely free</strong>
+            when we launch.
+          </p>
+
+          <p>
+            We’ll let you know as soon as TripFind goes live 🚀
+          </p>
+
+          <p>
+            We’re working behind the scenes to make travel planning faster, simpler,
+            and more personal - and we can’t wait to share it with you.
+          </p>
+
+          <p style="font-size:14px;color:#666;margin-top:20px;">
+            If you didn’t sign up for TripFind, you can safely ignore this email.
+          </p>
+
+          <p style="margin-top:24px;">
+            <strong>The TripFind Team</strong><br/>
+            tripfind.net
+          </p>
+        </div>
+      `,
+    });
+  } catch (err) {
+    console.error("Resend email failed:", err);
+  }
+}
+
 
     return NextResponse.json({
       ok: true,
