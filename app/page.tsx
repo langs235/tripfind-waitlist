@@ -34,7 +34,6 @@ export default function Home() {
 
   const contactEmail = "info@tripfind.net";
   const instagramUrl = "https://www.instagram.com/tripfind.app?igsh=ZWUwaDQ2d2RhbWlw";
-  const WAITLIST_COUNT = 512;
 
   const slides: Slide[] = useMemo(
     () => [
@@ -204,10 +203,6 @@ export default function Home() {
                   {message}
                 </p>
               )}
-              
-              <p className="mt-6 text-xs text-gray-400 font-medium">
-                🎁 Early access includes 1 month of Premium free.
-              </p>
             </form>
           </div>
 
@@ -281,8 +276,13 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t border-gray-100 py-12 text-center">
-        <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">© 2026 TripFind — All Rights Reserved</p>
+      {/* RESTORED CONTACT & INSTAGRAM LINKS */}
+      <footer className="border-t border-gray-100 py-16 text-center">
+        <div className="mb-8 flex justify-center gap-8 text-xs font-bold uppercase tracking-widest text-gray-500">
+          <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-black transition-colors">Instagram</a>
+          <a href={`mailto:${contactEmail}`} className="hover:text-black transition-colors">Contact</a>
+        </div>
+        <p className="text-[10px] font-bold text-gray-300 uppercase tracking-[0.2em]">© 2026 TripFind — All Rights Reserved</p>
       </footer>
 
       <style jsx global>{`
