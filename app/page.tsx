@@ -309,19 +309,20 @@ export default function Home() {
             </div>
 
             <h1 className="mt-6 max-w-xl text-4xl font-bold tracking-tight sm:text-5xl">
-              Find your next trip in seconds.
-            </h1>
+  Plan trips you’ll actually love — in seconds.
+</h1>
+
 
             <p className="mt-4 max-w-xl text-lg text-gray-600">
-              <span className="block font-medium text-gray-900">
-                Discover travel inspiration and turn it into a complete plan instantly.
-              </span>
+  <span className="block font-medium text-gray-900">
+    Discover travel inspiration and turn it into a complete plan instantly.
+  </span>
 
-              {/* ✅ HERO LINE CHANGE */}
-              <span className="block">From inspiration to itinerary, all in one flow.</span>
+  <span className="block">Stress-free planning, from idea to itinerary.</span>
 
-              <span className="block">No endless searching. Just trips that make sense.</span>
-            </p>
+  <span className="block">No endless searching — just trips that fit you.</span>
+</p>
+
 
             <div className="mt-5 max-w-xl">
               <span className="inline-flex items-center gap-2 rounded-full border bg-white/70 px-3 py-1 text-xs text-gray-700">
@@ -380,12 +381,13 @@ export default function Home() {
                 />
 
                 <button
-                  type="submit"
-                  disabled={status === "loading"}
-                  className="rounded-2xl bg-black px-5 py-3 text-white disabled:opacity-60 hover:opacity-90"
-                >
-                  {status === "loading" ? "Joining..." : "Get early access"}
-                </button>
+  type="submit"
+  disabled={status === "loading"}
+  className="rounded-2xl bg-black px-5 py-3 text-white disabled:opacity-60 hover:opacity-90"
+>
+  {status === "loading" ? "Joining..." : "Reserve my free Premium month"}
+</button>
+
               </div>
 
               <div className="mt-3">
