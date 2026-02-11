@@ -59,7 +59,7 @@ export async function POST(req) {
     await resend.emails.send({
       from: process.env.RESEND_FROM,
       to: [email],
-      subject: "Your smarter trips starts with us",
+      subject: "You’re in - Free Premium included",
       html: `
         <div style="font-family:system-ui,Arial,sans-serif;line-height:1.6">
           <h2>You're officially on the TripFind waitlist!</h2>
