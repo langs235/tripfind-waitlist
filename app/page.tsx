@@ -609,6 +609,18 @@ export default function Home() {
                     ].join(" ")}
                     style={{ transform: `scale(${scale})` }}
                   />
+                  <div key={slideAnimKey}>
+  <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded-md text-sm sm:text-base animate-fadeSlideIn">
+    Plan your weekend in 3 taps.
+  </div>
+  <a
+    href="#signup"
+    className="absolute top-1/2 right-6 -translate-y-1/2 rounded-2xl bg-black px-5 py-3 text-white text-sm sm:text-base shadow-lg hover:opacity-90 hidden lg:inline-block animate-fadeSlideIn"
+  >
+    Join waitlist
+  </a>
+</div>
+
                   <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded-md text-sm sm:text-base">
   Plan your weekend in 3 taps.
 </div>
@@ -778,6 +790,21 @@ export default function Home() {
 
       {/* Animations */}
       <style jsx global>{`
+      @keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeSlideIn {
+  animation: fadeSlideIn 0.5s ease-out;
+}
+
       @keyframes highlightInput {
   0% {
     box-shadow: 0 0 0px rgba(0, 0, 0, 0);
