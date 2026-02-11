@@ -34,7 +34,7 @@ export default function Home() {
   );
   const [message, setMessage] = useState("");
 
-  // ✅ NEW: micro-step before email
+  // ✅ Micro-step: Origin selection
   const [origin, setOrigin] = useState<"Europe" | "US" | "Other" | "">("");
 
   useEffect(() => {
@@ -43,24 +43,17 @@ export default function Home() {
     const input = document.getElementById("signup-email");
     if (!input) return;
 
-    // Remove class to reset animation
+    // Trigger highlight animation when origin is selected
     input.classList.remove("highlight-email");
-
-    // Trigger reflow
-    void input.offsetWidth;
-
-    // Add class again
+    void input.offsetWidth; // Force reflow
     input.classList.add("highlight-email");
   }, [origin]);
 
   const contactEmail = "info@tripfind.net";
-  const instagramUrl =
-    "https://www.instagram.com/tripfind.app?igsh=ZWUwaDQ2d2RhbWlw";
+  const instagramUrl = "https://www.instagram.com/tripfind.app?igsh=ZWUwaDQ2d2RhbWlw";
 
-  // ✅ Lower believable number
   const WAITLIST_COUNT = 512;
 
-  // ✅ Remove duplicate testimonial: keep only unique ones
   const quotes: Quote[] = useMemo(
     () => [
       {
@@ -85,7 +78,7 @@ export default function Home() {
 
   const [quoteIndex, setQuoteIndex] = useState(0);
 
-  // ✅ UPDATED: insert preview-5.jpg as 3rd, move old 3rd to 4th (last)
+  // ✅ Slide 5 inserted as 3rd, Slide 3 moved to 4th
   const slides: Slide[] = useMemo(
     () => [
       {
@@ -107,8 +100,8 @@ export default function Home() {
       {
         src: "/preview-5.jpg",
         alt: "TripFind preview - new flow",
-        label: "Trip ready",
-        caption: "Compare & Book",
+        label: "Compare",
+        caption: "Smart Comparison",
         fit: "contain",
         scale: 1.1,
       },
@@ -153,45 +146,38 @@ export default function Home() {
   const [index, setIndex] = useState(0);
   const [animDir, setAnimDir] = useState<"next" | "prev">("next");
   const [isPaused, setIsPaused] = useState(false);
-  const [slideAnimKey, setSlideAnimKey] = useState(0); // ✅ triggers animation on slide change
+  const [slideAnimKey, setSlideAnimKey] = useState(0); 
   const intervalRef = useRef<number | null>(null);
 
   const FRAME_HEIGHT_PX = 560;
   const year = useMemo(() => new Date().getFullYear(), []);
-
   const pointerDownRef = useRef<{ x: number; y: number } | null>(null);
 
   function goTo(i: number) {
     if (i === index) return;
     setAnimDir(i > index ? "next" : "prev");
     setIndex(i);
-    setSlideAnimKey((prev) => prev + 1); // ✅ triggers animation
+    setSlideAnimKey((prev) => prev + 1);
   }
 
   function next() {
     setAnimDir("next");
     setIndex((prev) => (prev + 1) % slides.length);
-    setSlideAnimKey((prev) => prev + 1); // ✅ triggers animation
+    setSlideAnimKey((prev) => prev + 1);
   }
 
   function prev() {
     setAnimDir("prev");
     setIndex((prev) => (prev - 1 + slides.length) % slides.length);
-    setSlideAnimKey((prev) => prev + 1); // ✅ triggers animation
+    setSlideAnimKey((prev) => prev + 1);
   }
 
   useEffect(() => {
     if (isPaused) return;
-
-    intervalRef.current = window.setInterval(() => {
-      next();
-    }, 4200);
-
+    intervalRef.current = window.setInterval(next, 4200);
     return () => {
       if (intervalRef.current) window.clearInterval(intervalRef.current);
-      intervalRef.current = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPaused, slides.length]);
 
   useEffect(() => {
@@ -210,15 +196,10 @@ export default function Home() {
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // ✅ include origin (safe; backend can ignore if not stored yet)
         body: JSON.stringify({ email, origin }),
       });
 
-      const text = await res.text();
-      let data: any = {};
-      try {
-        data = JSON.parse(text);
-      } catch {}
+      const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
         setStatus("error");
@@ -240,13 +221,11 @@ export default function Home() {
     const el = document.getElementById("signup-email");
     if (el) (el as HTMLInputElement).focus();
     const section = document.getElementById("signup");
-    if (section)
-      section.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (section) section.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
   const active = slides[index];
-  const fitClass =
-    (active.fit ?? "contain") === "cover" ? "object-cover" : "object-contain";
+  const fitClass = (active.fit ?? "contain") === "cover" ? "object-cover" : "object-contain";
   const scale = Math.max(active.scale ?? 1.0, 1.12);
 
   const fixedQuotes = quotes.slice(0, 2);
@@ -260,26 +239,12 @@ export default function Home() {
     const dx = e.clientX - pointerDownRef.current.x;
     const dy = e.clientY - pointerDownRef.current.y;
     pointerDownRef.current = null;
-
-    if (Math.abs(dx) < 40) return;
-    if (Math.abs(dy) > 60) return;
-
-    if (dx < 0) next();
-    else prev();
+    if (Math.abs(dx) < 40 || Math.abs(dy) > 60) return;
+    dx < 0 ? next() : prev();
   }
 
   return (
-    <main
-      className={`${font.className} min-h-screen bg-white text-black pb-24 sm:pb-0`}
-    >
-      {/* ✅ Dev Tasks (explicit) */}
-      <div className="hidden" aria-hidden="true">
-        {/* DEV TASKS:
-          1) Replace contact email (done): info@tripfind.net
-          2) Ensure mail forwarding works
-        */}
-      </div>
-
+    <main className={`${font.className} min-h-screen bg-white text-black pb-24 sm:pb-0`}>
       {/* Background gradients */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute -top-24 left-1/2 h-64 w-[36rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-sky-200 via-emerald-200 to-indigo-200 blur-3xl opacity-70" />
@@ -290,25 +255,13 @@ export default function Home() {
       <header className="mx-auto max-w-6xl px-6 py-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            {/* ✅ UPDATED: bigger logo, no frame */}
-            <img
-              src="/logo.png"
-              alt="TripFind logo"
-              className="h-10 w-auto"
-              draggable={false}
-            />
+            <img src="/logo.png" alt="TripFind logo" className="h-10 w-auto" draggable={false} />
             <div className="leading-tight">
               <div className="font-semibold tracking-tight">TripFind</div>
-              <div className="text-xs text-gray-500">
-                Smarter travel discovery
-              </div>
+              <div className="text-xs text-gray-500">Smarter travel discovery</div>
             </div>
           </div>
-
-          <a
-            href="#signup"
-            className="rounded-2xl border border-black bg-white/70 px-4 py-2 text-sm text-black hover:bg-white"
-          >
+          <a href="#signup" className="rounded-2xl border border-black bg-white/70 px-4 py-2 text-sm text-black hover:bg-white transition-colors">
             Get early access
           </a>
         </div>
@@ -317,18 +270,11 @@ export default function Home() {
       {/* Hero */}
       <section className="mx-auto max-w-6xl px-6 pb-12">
         <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
-          {/* Left */}
           <div className="pt-2">
             <div className="flex flex-wrap gap-2">
-              <span className="rounded-full border bg-white/70 px-3 py-1 text-xs">
-                ✨ Personalized
-              </span>
-              <span className="rounded-full border bg-white/70 px-3 py-1 text-xs">
-                💸 Budget-aware
-              </span>
-              <span className="rounded-full border bg-white/70 px-3 py-1 text-xs font-medium">
-                ⚡ Tap-to-Plan™️
-              </span>
+              <span className="rounded-full border bg-white/70 px-3 py-1 text-xs">✨ Personalized</span>
+              <span className="rounded-full border bg-white/70 px-3 py-1 text-xs">💸 Budget-aware</span>
+              <span className="rounded-full border bg-white/70 px-3 py-1 text-xs font-medium">⚡ Tap-to-Plan™️</span>
             </div>
 
             <h1 className="mt-6 max-w-xl text-4xl font-bold tracking-tight sm:text-5xl">
@@ -336,60 +282,36 @@ export default function Home() {
             </h1>
 
             <p className="mt-4 max-w-xl text-lg text-gray-600">
-              <span className="block font-medium text-gray-900">
-                Discover travel inspiration and turn it into a complete plan
-                instantly.
-              </span>
-              <span className="block">
-                Stress-free planning, from idea to itinerary.
-              </span>
-              <span className="block">
-                No endless searching — just trips that fit you.
-              </span>
+              <span className="block font-medium text-gray-900">Discover travel inspiration and turn it into a complete plan instantly.</span>
+              <span className="block">Stress-free planning, from idea to itinerary.</span>
+              <span className="block">No endless searching — just trips that fit you.</span>
             </p>
 
-            <div className="mt-5 max-w-xl">
-              <span className="inline-flex items-center gap-2 rounded-full border bg-white/70 px-3 py-1 text-xs text-gray-700">
-                ⚡ <span className="font-semibold">Tap-to-Plan™️</span> turns a
-                trip idea into an instant itinerary.
-              </span>
-            </div>
-
-            <div className="mt-6 max-w-xl">
+            <div className="mt-6">
               <div className="inline-flex items-center gap-2 rounded-2xl border bg-white/70 px-4 py-2 text-sm text-gray-800">
                 <span className="text-base">🔥</span>
-                <span className="font-semibold">
-                  {WAITLIST_COUNT.toLocaleString()} travelers already joined
-                </span>
+                <span className="font-semibold">{WAITLIST_COUNT.toLocaleString()} travelers already joined</span>
               </div>
             </div>
 
-            <form id="signup" onSubmit={onSubmit} className="mt-4 max-w-xl">
-              {/* ✅ NEW micro-step */}
-              <div className="mb-3">
-                <label className="block text-xs font-medium text-gray-700 mb-1">
+            <form id="signup" onSubmit={onSubmit} className="mt-6 max-w-xl">
+              <div className="mb-4">
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
                   Where are you traveling from?
                 </label>
                 <div className="flex flex-wrap gap-2">
-                  {(["Europe", "US", "Other"] as const).map((opt) => {
-                    const active = origin === opt;
-                    return (
-                      <button
-                        key={opt}
-                        type="button"
-                        onClick={() => setOrigin(opt)}
-                        className={[
-                          "rounded-full border px-3 py-1 text-xs transition",
-                          active
-                            ? "bg-black text-white border-black"
-                            : "bg-white/70 text-gray-800 hover:bg-white border-gray-300",
-                        ].join(" ")}
-                        aria-pressed={active}
-                      >
-                        {opt}
-                      </button>
-                    );
-                  })}
+                  {(["Europe", "US", "Other"] as const).map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => setOrigin(opt)}
+                      className={`rounded-full border px-4 py-1.5 text-xs font-medium transition-all ${
+                        origin === opt ? "bg-black text-white border-black shadow-md" : "bg-white/70 text-gray-800 hover:bg-white border-gray-300"
+                      }`}
+                    >
+                      {opt}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -398,156 +320,34 @@ export default function Home() {
                   id="signup-email"
                   type="email"
                   required
-                  disabled={!origin} // disabled until origin is selected
+                  disabled={!origin}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={
-                    origin
-                      ? "Enter your email for early access"
-                      : "Select your origin first"
-                  }
-                  className={[
-                    "w-full rounded-2xl border bg-white/90 px-4 py-3 outline-none backdrop-blur focus:ring-2 disabled:opacity-50",
-                    origin ? "highlight-email" : "",
-                  ].join(" ")}
+                  placeholder={origin ? "Enter your email for early access" : "Select your origin first"}
+                  className={`w-full rounded-2xl border bg-white/90 px-4 py-3 outline-none backdrop-blur focus:ring-2 focus:ring-black/5 disabled:opacity-50 transition-all ${
+                    origin ? "highlight-email" : ""
+                  }`}
                 />
-
                 <button
                   type="submit"
-                  disabled={status === "loading"}
-                  className="rounded-2xl bg-black px-5 py-3 text-white disabled:opacity-60 hover:opacity-90"
+                  disabled={status === "loading" || !origin}
+                  className="rounded-2xl bg-black px-5 py-3 text-white disabled:opacity-60 hover:opacity-90 transition-opacity font-medium whitespace-nowrap"
                 >
-                  {status === "loading"
-                    ? "Joining..."
-                    : "Reserve my free Premium month"}
+                  {status === "loading" ? "Joining..." : "Reserve my free Premium month"}
                 </button>
               </div>
 
-              <div className="mt-3">
-                <p className="text-sm font-medium text-gray-900">
-                  🎁 Early access + 1 month of Premium free for early users
+              {message && (
+                <p className={`mt-3 text-sm font-medium ${status === "success" ? "text-emerald-700" : "text-red-600"}`}>
+                  {message}
                 </p>
-                <p className="mt-1 text-xs text-gray-600">
-                  Priority onboarding. Cancel anytime.
-                </p>
+              )}
+
+              <div className="mt-4">
+                <p className="text-sm font-medium text-gray-900">🎁 Early access + 1 month of Premium free</p>
+                <p className="mt-1 text-xs text-gray-500">Priority onboarding. No spam. Cancel anytime.</p>
               </div>
             </form>
-
-            {message && (
-              <p
-                className={`mt-3 max-w-xl text-sm ${
-                  status === "success" ? "text-emerald-700" : "text-red-600"
-                }`}
-              >
-                {message}
-              </p>
-            )}
-
-            <p className="mt-3 max-w-xl text-xs text-gray-500">
-              No spam. Only launch updates. Unsubscribe anytime.
-            </p>
-
-            {/* How TripFind works */}
-            <div className="mt-8 max-w-xl">
-              <h2 className="text-lg font-semibold tracking-tight">
-                How TripFind works
-              </h2>
-
-              <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-2xl border bg-white/70 p-4 shadow-sm backdrop-blur">
-                  <div className="flex items-center gap-2">
-                    <div className="grid h-9 w-9 place-items-center rounded-xl border bg-white">
-                      🎛️
-                    </div>
-                    <div className="text-sm font-semibold">Step 1</div>
-                  </div>
-                  <p className="mt-2 text-sm text-gray-700">
-                    <span className="font-semibold">Pick your vibe</span>{" "}
-                    <span className="text-gray-600">
-                      Budget, days, interests.
-                    </span>
-                  </p>
-                </div>
-
-                <div className="rounded-2xl border bg-white/70 p-4 shadow-sm backdrop-blur">
-                  <div className="flex items-center gap-2">
-                    <div className="grid h-9 w-9 place-items-center rounded-xl border bg-white">
-                      📲
-                    </div>
-                    <div className="text-sm font-semibold">Step 2</div>
-                  </div>
-                  <p className="mt-2 text-sm text-gray-700">
-                    <span className="font-semibold">Discover Trips</span>
-                    <span className="block text-gray-600">
-                      Scroll videos + curated topics
-                    </span>
-                  </p>
-                </div>
-
-                <div className="relative overflow-hidden rounded-2xl border bg-white p-4 shadow-sm">
-                  <div className="pointer-events-none absolute -inset-12 bg-gradient-to-r from-emerald-200 via-sky-200 to-indigo-200 blur-2xl opacity-70" />
-                  <div className="relative">
-                    <div className="flex items-center gap-2">
-                      <div className="grid h-9 w-9 place-items-center rounded-xl bg-black text-white">
-                        ✨
-                      </div>
-                      <div className="text-sm font-semibold">Step 3</div>
-                    </div>
-
-                    <p className="mt-2 text-sm text-gray-900">
-                      <span className="inline-flex items-center gap-2 rounded-full bg-black px-3 py-1 text-white text-sm font-semibold shadow-md ring-2 ring-black/10 whitespace-nowrap">
-                        ⭕ Tap to plan
-                      </span>
-                      <span className="block mt-2 text-gray-700">
-                        Instant itinerary. Compare options.
-                        <span className="block">Book when ready.</span>
-                      </span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 rounded-2xl border bg-white/70 px-4 py-3 text-sm text-gray-700">
-                🌍 Powered by global inventory partners across flights, stays,
-                and experiences.
-              </div>
-            </div>
-
-            {/* Quotes */}
-            <div className="mt-8 max-w-xl">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-gray-900">
-                  What early users say
-                </h3>
-                <span className="text-xs text-gray-500"></span>
-              </div>
-
-              <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                {fixedQuotes.map((q) => (
-                  <blockquote
-                    key={q.text}
-                    className="rounded-2xl border bg-white/70 p-4 shadow-sm backdrop-blur"
-                  >
-                    <p className="text-sm text-gray-800">“{q.text}”</p>
-                    <footer className="mt-2 text-xs text-gray-500">
-                      {q.author}
-                    </footer>
-                  </blockquote>
-                ))}
-              </div>
-
-              <blockquote className="mt-3 rounded-2xl border bg-white/70 p-4 shadow-sm backdrop-blur">
-                <p
-                  key={rotatingQuote.text}
-                  className="text-sm text-gray-800 animate-fadeIn"
-                >
-                  “{rotatingQuote.text}”
-                </p>
-                <footer className="mt-2 text-xs text-gray-500">
-                  {rotatingQuote.author}
-                </footer>
-              </blockquote>
-            </div>
           </div>
 
           {/* Product Preview */}
@@ -560,35 +360,16 @@ export default function Home() {
               <div className="mb-3 flex items-center justify-between">
                 <div>
                   <div className="text-sm font-semibold">Product preview</div>
-                  <div className="text-xs text-gray-500">
-                    👆 Swipe through real in-app flow
-                  </div>
+                  <div className="text-xs text-gray-500">👆 Swipe to explore the flow</div>
                 </div>
-
                 <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={prev}
-                    className="rounded-2xl border bg-white px-4 py-2 text-sm hover:bg-gray-50"
-                    aria-label="Previous slide"
-                  >
-                    ←
-                  </button>
-                  <button
-                    type="button"
-                    onClick={next}
-                    className="rounded-2xl border bg-white px-4 py-2 text-sm hover:bg-gray-50"
-                    aria-label="Next slide"
-                  >
-                    →
-                  </button>
+                  <button onClick={prev} className="rounded-xl border bg-white p-2 text-sm hover:bg-gray-50 transition-colors">←</button>
+                  <button onClick={next} className="rounded-xl border bg-white p-2 text-sm hover:bg-gray-50 transition-colors">→</button>
                 </div>
               </div>
 
               <div className="relative rounded-2xl border bg-white p-2">
-                <div className="pointer-events-none absolute inset-x-0 top-0 h-16 rounded-2xl bg-gradient-to-b from-black/10 to-transparent" />
-
-                <div
+                <div 
                   className="relative overflow-hidden rounded-xl bg-gradient-to-b from-amber-50 via-sky-50 to-white w-full touch-pan-y select-none"
                   style={{ height: FRAME_HEIGHT_PX }}
                   onPointerDown={onPointerDown}
@@ -599,51 +380,33 @@ export default function Home() {
                     src={active.src}
                     alt={active.alt}
                     draggable={false}
-                    className={[
-                      "absolute inset-0 h-full w-full",
-                      fitClass,
-                      "will-change-transform",
-                      animDir === "next"
-                        ? "animate-slideInFromRight"
-                        : "animate-slideInFromLeft",
-                    ].join(" ")}
+                    className={`absolute inset-0 h-full w-full ${fitClass} will-change-transform ${
+                      animDir === "next" ? "animate-slideInFromRight" : "animate-slideInFromLeft"
+                    }`}
                     style={{ transform: `scale(${scale})` }}
                   />
 
-                  {/* ✅ Animated tagline + CTA */}
                   <div key={slideAnimKey}>
-                    <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded-md text-sm sm:text-base animate-fadeSlideIn">
-                      Plan your weekend in 3 taps.
+                    <div className="absolute bottom-6 left-4 right-4 bg-black/70 backdrop-blur-md text-white px-4 py-2 rounded-xl text-sm animate-fadeSlideIn border border-white/10">
+                      Plan your trip in 3 taps.
                     </div>
-                    <a
-                      href="#signup"
-                      className="absolute top-1/2 right-6 -translate-y-1/2 rounded-2xl bg-black px-5 py-3 text-white text-sm sm:text-base shadow-lg hover:opacity-90 hidden lg:inline-block animate-fadeSlideIn"
-                    >
-                      Join waitlist
-                    </a>
                   </div>
-                </div>{" "}
-                {/* This closes the relative overflow-hidden wrapper */}
+                </div>
+
                 <div className="mt-4 flex items-center justify-between">
-                  <div className="flex gap-2">
+                  <div className="flex gap-1.5">
                     {slides.map((s, i) => (
                       <button
                         key={s.src}
-                        type="button"
                         onClick={() => goTo(i)}
-                        aria-label={`Go to slide ${i + 1}`}
-                        className={[
-                          "h-2.5 w-2.5 rounded-full border transition-all",
-                          i === index
-                            ? "bg-black border-black w-7"
-                            : "bg-white border-gray-300 hover:bg-gray-50",
-                        ].join(" ")}
+                        className={`h-1.5 rounded-full transition-all ${
+                          i === index ? "bg-black w-6" : "bg-gray-200 w-1.5 hover:bg-gray-300"
+                        }`}
                       />
                     ))}
                   </div>
-
-                  <div className="text-xs font-semibold tracking-tight text-gray-900">
-                    {active.caption ?? ""}
+                  <div className="text-xs font-bold uppercase tracking-widest text-gray-400">
+                    {active.caption}
                   </div>
                 </div>
               </div>
@@ -652,240 +415,75 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why TripFind */}
+      {/* FAQ */}
       <section className="mx-auto max-w-6xl px-6 pb-14">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-2xl font-semibold">Why TripFind?</h2>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            <Feature icon="⚡" title="Faster discovery">
-              Find trips you’d actually take in minutes, not hours.
-            </Feature>
-            <Feature icon="🎯" title="Better matches">
-              Vibe, budget, and time — not just destination.
-            </Feature>
-            <Feature icon="🔥" title="Tap-to-Plan">
-              See something you like? Tap once and get a full trip.
-            </Feature>
-          </div>
-        </div>
-      </section>
-
-      {/* ✅ FAQ (before Privacy) */}
-      <section className="mx-auto max-w-6xl px-6 pb-14">
-        <div className="rounded-3xl border bg-white/70 p-6 shadow-sm backdrop-blur">
-          <h2 className="text-2xl font-semibold">FAQ</h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Quick answers to remove hesitation.
-          </p>
-
-          <div className="mt-6 space-y-3">
+        <div className="rounded-3xl border bg-white/70 p-8 shadow-sm backdrop-blur">
+          <h2 className="text-2xl font-bold">Frequently Asked Questions</h2>
+          <div className="mt-8 space-y-4">
             {faqs.map((f) => (
-              <details
-                key={f.q}
-                className="group rounded-2xl border bg-white p-4"
-              >
+              <details key={f.q} className="group rounded-2xl border bg-white p-5 transition-all hover:border-gray-300">
                 <summary className="cursor-pointer list-none font-semibold text-gray-900 flex items-center justify-between">
                   <span>{f.q}</span>
-                  <span className="ml-3 text-gray-500 group-open:rotate-45 transition-transform">
-                    +
-                  </span>
+                  <span className="text-gray-400 group-open:rotate-45 transition-transform text-xl">+</span>
                 </summary>
-                <p className="mt-2 text-sm text-gray-600">{f.a}</p>
+                <p className="mt-3 text-sm text-gray-600 leading-relaxed">{f.a}</p>
               </details>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Privacy / Contact */}
-      <section id="privacy" className="mx-auto max-w-6xl px-6 pb-8 scroll-mt-24">
-        <div className="rounded-3xl border bg-white/70 p-6 shadow-sm backdrop-blur">
-          <h3 className="text-lg font-semibold">Privacy</h3>
-          <p className="mt-2 text-sm text-gray-600">
-            We only collect your email to notify you about TripFind launch
-            updates and early access. We don’t sell your data. You can
-            unsubscribe anytime.
-          </p>
-        </div>
-      </section>
-
-      <section
-        id="contact"
-        className="mx-auto max-w-6xl px-6 pb-14 scroll-mt-24"
-      >
-        <div className="rounded-3xl border bg-white/70 p-6 shadow-sm backdrop-blur">
-          <h3 className="text-lg font-semibold">Contact</h3>
-          <p className="mt-2 text-sm text-gray-600">
-            Want to partner or ask a question? Email us at{" "}
-            <a className="underline" href={`mailto:${contactEmail}`}>
-              {contactEmail}
-            </a>
-            .
-          </p>
-
-          {/* ✅ WhatsApp removed */}
-          <div className="mt-4 flex flex-wrap gap-2">
-            <a
-              href={instagramUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-2xl border bg-white px-4 py-2 text-sm hover:bg-gray-50"
-            >
-              Instagram
-            </a>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
-      <footer className="border-t">
-        <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-gray-500 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            {/* ✅ UPDATED: bigger logo, no frame */}
-            <img
-              src="/logo.png"
-              alt="TripFind logo"
-              className="h-10 w-auto"
-              draggable={false}
-            />
-            <div className="flex flex-col gap-0.5">
-              <div>© {year} TripFind</div>
-              <div className="text-xs text-gray-500">
-                Built with ❤️ for travelers.
-              </div>
+      <footer className="border-t bg-gray-50/50">
+        <div className="mx-auto max-w-6xl px-6 py-12 flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-4">
+            <img src="/logo.png" alt="TripFind" className="h-10 w-auto" />
+            <div>
+              <div className="font-bold">© {year} TripFind</div>
+              <div className="text-xs text-gray-500">Built with ❤️ for modern travelers.</div>
             </div>
           </div>
-
-          <div className="flex gap-4">
-            <a href="#privacy" className="hover:text-black">
-              Privacy
-            </a>
-            <a href="#contact" className="hover:text-black">
-              Contact
-            </a>
+          <div className="flex gap-6 text-sm font-medium">
+            <a href={instagramUrl} target="_blank" rel="noreferrer" className="text-gray-600 hover:text-black">Instagram</a>
+            <a href={`mailto:${contactEmail}`} className="text-gray-600 hover:text-black">Contact</a>
           </div>
         </div>
       </footer>
 
-      {/* ✅ Sticky Mobile CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-white/90 backdrop-blur sm:hidden">
-        <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-3">
-          <div className="leading-tight">
-            <div className="text-sm font-semibold">Get early access</div>
-            <div className="text-xs text-gray-600">1 month Premium free</div>
-          </div>
-          <button
-            type="button"
-            onClick={focusSignup}
-            className="rounded-2xl bg-black px-4 py-2 text-sm text-white"
-          >
-            Get early access
-          </button>
-        </div>
+      {/* Sticky Mobile CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-white/95 backdrop-blur-md sm:hidden px-4 py-4">
+        <button onClick={focusSignup} className="w-full rounded-2xl bg-black py-4 text-sm font-bold text-white shadow-xl">
+          Get Early Access — 1 Month Free
+        </button>
       </div>
 
-      {/* Animations */}
       <style jsx global>{`
         @keyframes fadeSlideIn {
-          0% {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-
-        .animate-fadeSlideIn {
-          animation: fadeSlideIn 0.5s ease-out;
-        }
+        .animate-fadeSlideIn { animation: fadeSlideIn 0.5s ease-out forwards; }
 
         @keyframes highlightInput {
-          0% {
-            box-shadow: 0 0 0px rgba(0, 0, 0, 0);
-          }
-          50% {
-            box-shadow: 0 0 10px rgba(0, 128, 255, 0.7);
-          }
-          100% {
-            box-shadow: 0 0 0px rgba(0, 0, 0, 0);
-          }
+          0% { border-color: #e5e7eb; box-shadow: 0 0 0px transparent; }
+          50% { border-color: #000; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+          100% { border-color: #e5e7eb; box-shadow: 0 0 0px transparent; }
         }
-
-        .highlight-email {
-          animation: highlightInput 1s ease-in-out;
-        }
-
-        html {
-          scrollbar-gutter: stable;
-          scroll-behavior: smooth;
-        }
+        .highlight-email { animation: highlightInput 1.2s ease-in-out; }
 
         @keyframes slideInFromRight {
-          0% {
-            opacity: 0;
-            transform: translateX(18px) scale(${scale});
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0) scale(${scale});
-          }
+          from { opacity: 0; transform: translateX(20px) scale(${scale}); }
+          to { opacity: 1; transform: translateX(0) scale(${scale}); }
         }
         @keyframes slideInFromLeft {
-          0% {
-            opacity: 0;
-            transform: translateX(-18px) scale(${scale});
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0) scale(${scale});
-          }
+          from { opacity: 0; transform: translateX(-20px) scale(${scale}); }
+          to { opacity: 1; transform: translateX(0) scale(${scale}); }
         }
-        .animate-slideInFromRight {
-          animation: slideInFromRight 0.5s ease-out;
-        }
-        .animate-slideInFromLeft {
-          animation: slideInFromLeft 0.5s ease-out;
-        }
+        .animate-slideInFromRight { animation: slideInFromRight 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .animate-slideInFromLeft { animation: slideInFromLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
 
-        @keyframes fadeIn {
-          0% {
-            opacity: 0;
-            transform: translateY(2px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.35s ease-out;
-        }
+        html { scroll-behavior: smooth; }
       `}</style>
     </main>
-  );
-}
-
-function Feature({
-  icon,
-  title,
-  children,
-}: {
-  icon: string;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="rounded-3xl border bg-white/70 p-6 shadow-sm backdrop-blur">
-      <div className="flex items-center gap-3">
-        <div className="grid h-10 w-10 place-items-center rounded-2xl border bg-white">
-          {icon}
-        </div>
-        <div className="font-semibold">{title}</div>
-      </div>
-      <p className="mt-3 text-sm text-gray-600">{children}</p>
-    </div>
   );
 }
