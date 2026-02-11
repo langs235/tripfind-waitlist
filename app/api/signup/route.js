@@ -87,12 +87,12 @@ if (process.env.RESEND_API_KEY && process.env.RESEND_FROM) {
           </p>
 
           <p>
-            We’ll let you know as soon as TripFind goes live 🚀
+            We’re working behind the scenes to make travel planning faster, simpler,
+            and more personal - and we can’t wait to share it with you.
           </p>
 
           <p>
-            We’re working behind the scenes to make travel planning faster, simpler,
-            and more personal - and we can’t wait to share it with you.
+            We’ll let you know as soon as TripFind goes live 🚀
           </p>
 
           <p style="font-size:14px;color:#666;margin-top:24px;">
