@@ -603,6 +603,10 @@ export default function Home() {
                     ].join(" ")}
                     style={{ transform: `scale(${scale})` }}
                   />
+                  <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded-md text-sm sm:text-base">
+  Plan your weekend in 3 taps.
+</div>
+
                 </div>
               </div>
 
