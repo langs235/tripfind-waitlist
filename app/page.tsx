@@ -371,14 +371,24 @@ export default function Home() {
 
               <div className="flex flex-col gap-3 sm:flex-row">
                 <input
-                  id="signup-email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email for early access"
-                  className="w-full rounded-2xl border bg-white/90 px-4 py-3 outline-none backdrop-blur focus:ring-2"
-                />
+  id="signup-email"
+  type="email"
+  required
+  disabled={!origin} // disabled until origin is selected
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+  placeholder={
+    origin
+      ? "Enter your email for early access"
+      : "Select your origin first"
+  }
+  className={[
+  "w-full rounded-2xl border bg-white/90 px-4 py-3 outline-none backdrop-blur focus:ring-2 disabled:opacity-50",
+  origin ? "highlight-email" : "",
+].join(" ")}
+
+/>
+
 
                 <button
   type="submit"
