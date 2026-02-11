@@ -587,6 +587,13 @@ export default function Home() {
                   style={{ height: FRAME_HEIGHT_PX }}
                   onPointerDown={onPointerDown}
                   onPointerUp={onPointerUp}
+                  <a
+  href="#signup"
+  className="absolute top-1/2 right-6 -translate-y-1/2 rounded-2xl bg-black px-5 py-3 text-white text-sm sm:text-base shadow-lg hover:opacity-90 hidden lg:inline-block"
+>
+  Join waitlist
+</a>
+
                 >
                   <img
                     key={active.src}
