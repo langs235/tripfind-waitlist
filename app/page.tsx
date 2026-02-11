@@ -588,39 +588,43 @@ export default function Home() {
               <div className="relative rounded-2xl border bg-white p-2">
                 <div className="pointer-events-none absolute inset-x-0 top-0 h-16 rounded-2xl bg-gradient-to-b from-black/10 to-transparent" />
 
-                <div
-                  className="relative overflow-hidden rounded-xl bg-gradient-to-b from-amber-50 via-sky-50 to-white w-full touch-pan-y select-none"
-                  style={{ height: FRAME_HEIGHT_PX }}
-                  onPointerDown={onPointerDown}
-                  onPointerUp={onPointerUp}
-                >
-                  <img
-                    key={active.src}
-                    src={active.src}
-                    alt={active.alt}
-                    draggable={false}
-                    className={[
-                      "absolute inset-0 h-full w-full",
-                      fitClass,
-                      "will-change-transform",
-                      animDir === "next"
-                        ? "animate-slideInFromRight"
-                        : "animate-slideInFromLeft",
-                    ].join(" ")}
-                    style={{ transform: `scale(${scale})` }}
-                  />
-                  <div key={slideAnimKey}>
-  <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded-md text-sm sm:text-base animate-fadeSlideIn">
-    Plan your weekend in 3 taps.
+              <div
+  className="relative overflow-hidden rounded-xl bg-gradient-to-b from-amber-50 via-sky-50 to-white w-full touch-pan-y select-none"
+  style={{ height: FRAME_HEIGHT_PX }}
+  onPointerDown={onPointerDown}
+  onPointerUp={onPointerUp}
+>
+  <img
+    key={active.src}
+    src={active.src}
+    alt={active.alt}
+    draggable={false}
+    className={[
+      "absolute inset-0 h-full w-full",
+      fitClass,
+      "will-change-transform",
+      animDir === "next"
+        ? "animate-slideInFromRight"
+        : "animate-slideInFromLeft",
+    ].join(" ")}
+    style={{ transform: `scale(${scale})` }}
+  />
+
+  {/* ✅ Animated tagline + CTA */}
+  <div key={slideAnimKey}>
+    <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded-md text-sm sm:text-base animate-fadeSlideIn">
+      Plan your weekend in 3 taps.
+    </div>
+    <a
+      href="#signup"
+      className="absolute top-1/2 right-6 -translate-y-1/2 rounded-2xl bg-black px-5 py-3 text-white text-sm sm:text-base shadow-lg hover:opacity-90 hidden lg:inline-block animate-fadeSlideIn"
+    >
+      Join waitlist
+    </a>
   </div>
-  <a
-    href="#signup"
-    className="absolute top-1/2 right-6 -translate-y-1/2 rounded-2xl bg-black px-5 py-3 text-white text-sm sm:text-base shadow-lg hover:opacity-90 hidden lg:inline-block animate-fadeSlideIn"
-  >
-    Join waitlist
-  </a>
-</div>
-              </div>
+</div>  {/* This closes the relative overflow-hidden wrapper */}
+
+
 
               <div className="mt-4 flex items-center justify-between">
                 <div className="flex gap-2">
