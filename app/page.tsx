@@ -26,7 +26,9 @@ type FAQ = {
 
 export default function Home() {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
+    "idle"
+  );
   const [message, setMessage] = useState("");
   const [origin, setOrigin] = useState<"Europe" | "US" | "Other" | "">("");
 
@@ -34,12 +36,29 @@ export default function Home() {
   const instagramUrl = "https://www.instagram.com/tripfind.app?igsh=ZWUwaDQ2d2RhbWlw";
   const WAITLIST_COUNT = 512;
 
+  // Swapped captions for slides 2 and 3 as requested
   const slides: Slide[] = useMemo(
     () => [
-      { src: "/preview-1.jpg", alt: "Discover", caption: "1. Discover hidden gems" },
-      { src: "/preview-2.png", alt: "Tap Plan", caption: "2. Tap-to-Plan™ instantly" },
-      { src: "/preview-5.jpg", alt: "Compare", caption: "3. Smart comparison view" },
-      { src: "/preview-3.jpg", alt: "Ready", caption: "4. Your itinerary is ready" },
+      { 
+        src: "/preview-1.jpg", 
+        alt: "Discover", 
+        caption: "1. Discover hidden gems" 
+      },
+      { 
+        src: "/preview-2.png", 
+        alt: "Compare", 
+        caption: "2. Smart comparison view" 
+      },
+      { 
+        src: "/preview-5.jpg", 
+        alt: "Tap Plan", 
+        caption: "3. Tap-to-Plan™ instantly" 
+      },
+      { 
+        src: "/preview-3.jpg", 
+        alt: "Ready", 
+        caption: "4. Your itinerary is ready" 
+      },
     ],
     []
   );
@@ -108,7 +127,6 @@ export default function Home() {
 
   return (
     <main className={`${font.className} min-h-screen bg-white text-black pb-24 sm:pb-0`}>
-      {/* Gradients */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute -top-24 left-1/2 h-64 w-[36rem] -translate-x-1/2 rounded-full bg-sky-100 blur-3xl opacity-50" />
         <div className="absolute bottom-[-5rem] right-[-5rem] h-72 w-72 rounded-full bg-rose-100 blur-3xl opacity-50" />
@@ -131,7 +149,6 @@ export default function Home() {
 
       <section className="mx-auto max-w-6xl px-6 py-12">
         <div className="grid gap-12 lg:grid-cols-[1fr_400px]">
-          {/* Left Column: Copy & Form */}
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-black/5 bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-wider shadow-sm">
               <span className="text-emerald-500">●</span> Now accepting early users
@@ -195,7 +212,6 @@ export default function Home() {
             </form>
           </div>
 
-          {/* Right Column: Phone Preview */}
           <div className="relative">
             <div 
               className="mx-auto w-full max-w-[340px] overflow-hidden rounded-[3rem] border-[8px] border-white bg-white shadow-[0_32px_64px_-12px_rgba(0,0,0,0.15)]"
@@ -212,7 +228,6 @@ export default function Home() {
                   if (Math.abs(dx) > 40) dx < 0 ? next() : prev();
                 }}
               >
-                {/* Fixed the mapping and keying to prevent messed up text */}
                 <div className="absolute inset-0">
                   <img
                     key={active.src}
@@ -224,7 +239,6 @@ export default function Home() {
                   />
                 </div>
 
-                {/* Floating Caption - Hard-synced to active slide */}
                 <div className="absolute bottom-8 left-4 right-4 z-20">
                   <div key={active.caption} className="animate-fadeUp rounded-2xl bg-black/80 p-4 text-center text-sm font-bold text-white backdrop-blur-md">
                     {active.caption}
@@ -232,7 +246,6 @@ export default function Home() {
                 </div>
               </div>
               
-              {/* Progress Dots */}
               <div className="flex justify-center gap-2 py-4 bg-white border-t border-gray-50">
                 {slides.map((_, i) => (
                   <div key={i} className={`h-1.5 rounded-full transition-all ${i === index ? "w-6 bg-black" : "w-1.5 bg-gray-200"}`} />
@@ -243,7 +256,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {quotes.map((q, i) => (
@@ -255,7 +267,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ */}
       <section className="mx-auto max-w-3xl px-6 py-20">
         <h2 className="mb-10 text-center text-3xl font-bold">Common Questions</h2>
         <div className="space-y-4">
