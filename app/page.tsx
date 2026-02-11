@@ -37,6 +37,25 @@ export default function Home() {
   // ✅ NEW: micro-step before email
   const [origin, setOrigin] = useState<"Europe" | "US" | "Other" | "">("");
 
+  useEffect(() => {
+  if (!origin) return;
+
+  const input = document.getElementById("signup-email");
+  if (!input) return;
+
+  // Remove class to reset animation
+  input.classList.remove("highlight-email");
+
+  // Trigger reflow
+  void input.offsetWidth;
+
+  // Add class again
+  input.classList.add("highlight-email");
+}, [origin]);
+
+
+  
+
   const contactEmail = "info@tripfind.net";
   const instagramUrl =
     "https://www.instagram.com/tripfind.app?igsh=ZWUwaDQ2d2RhbWlw";
