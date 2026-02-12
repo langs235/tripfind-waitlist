@@ -179,17 +179,18 @@ export default function Home() {
             <div 
               className="mx-auto w-full max-w-[340px] overflow-hidden rounded-[3rem] border-[8px] border-white bg-white shadow-[0_32px_64px_-12px_rgba(0,0,0,0.15)]"
             >
-              {/* ✅ Updated approach: Use a standard aspect ratio and a cover bar for a perfect fit */}
-              <div className="relative aspect-[9/19.5] w-full bg-black">
-                {/* This black bar covers the status bar area from the video */}
-                <div className="absolute top-0 left-0 right-0 h-8 bg-black z-10"></div>
-                
+              {/* ✅ FIX: Removed the black bar. Used scale and translate to crop the status bar naturally. */}
+              <div className="relative aspect-[9/19] w-full bg-black overflow-hidden">
                 <video
                   autoPlay
                   muted
                   loop
                   playsInline
-                  className="absolute inset-0 h-full w-full object-cover"
+                  /* scale-[1.05]: Zooms in 5% to make sure edges are covered.
+                     -translate-y-4: Moves the video UP by 1rem (16px), pushing the top status bar out of the frame.
+                     object-cover: Ensures the video fills the container completely.
+                  */
+                  className="h-full w-full object-cover scale-[1.05] -translate-y-4"
                 >
                   <source src="/productpreview.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
