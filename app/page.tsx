@@ -26,59 +26,38 @@ type FAQ = {
 
 export default function Home() {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
-    "idle"
-  );
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [origin, setOrigin] = useState<"Europe" | "US" | "Other" | "">("");
+  
+  // State to trigger the "opening" animation on the form
+  const [isHighlighting, setIsHighlighting] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const contactEmail = "info@tripfind.net";
   const instagramUrl = "https://www.instagram.com/tripfind.app?igsh=ZWUwaDQ2d2RhbWlw";
 
-  const slides: Slide[] = useMemo(
-    () => [
-      { 
-        src: "/preview-1.jpg", 
-        alt: "Discover", 
-        caption: "1. Browse hand-picked gems" 
-      },
-      { 
-        src: "/preview-2.png", 
-        alt: "Compare", 
-        caption: "2. Explore better alternatives" 
-      },
-      { 
-        src: "/preview-5.jpg", 
-        alt: "Tap Plan", 
-        caption: "3. One tap, complete itinerary" 
-      },
-      { 
-        src: "/preview-3.jpg", 
-        alt: "Ready", 
-        caption: "4. Your trip is ready to go" 
-      },
-    ],
-    []
-  );
+  const slides: Slide[] = useMemo(() => [
+    { src: "/preview-1.jpg", alt: "Discover", caption: "1. Browse hand-picked gems" },
+    { src: "/preview-2.png", alt: "Compare", caption: "2. Explore better alternatives" },
+    { src: "/preview-5.jpg", alt: "Tap Plan", caption: "3. One tap, complete itinerary" },
+    { src: "/preview-3.jpg", alt: "Ready", caption: "4. Your trip is ready to go" },
+  ], []);
 
-  const quotes: Quote[] = useMemo(
-    () => [
-      { text: "I found a weekend trip in 3 minutes that actually matched my budget.", author: "— Beta user" },
-      { text: "The Tap-to-Plan feature is crazy. This should already exist.", author: "— Early tester" },
-      { text: "Finally a travel app that feels like scrolling — but ends with a real plan.", author: "— Waitlist member" },
-      { text: "I hate tab-hopping. This makes planning feel effortless.", author: "— Early tester" },
-    ],
-    []
-  );
+  const quotes: Quote[] = useMemo(() => [
+    { text: "I found a weekend trip in 3 minutes that actually matched my budget.", author: "— Beta user" },
+    { text: "The Tap-to-Plan feature is crazy. This should already exist.", author: "— Early tester" },
+    { text: "Finally a travel app that feels like scrolling — but ends with a real plan.", author: "— Waitlist member" },
+    { text: "I hate tab-hopping. This makes planning feel effortless.", author: "— Early tester" },
+  ], []);
 
-  const faqs: FAQ[] = useMemo(
-    () => [
-      { q: "When does TripFind launch?", a: "We’re rolling out access in waves. Join the waitlist to get early access first." },
-      { q: "Is TripFind free?", a: "Yes — the core experience is free. Premium adds extra features and perks." },
-      { q: "How does personalization work?", a: "We learn from your vibe, budget, and time to tailor trips that fit you." },
-    ],
-    []
-  );
+  const faqs: FAQ[] = useMemo(() => [
+    { q: "When does TripFind launch?", a: "We’re rolling out access in waves. Join the waitlist to get early access first." },
+    { q: "Is TripFind free?", a: "Yes — the core experience is free. Premium adds extra features and perks." },
+    { q: "How does personalization work?", a: "We learn from your vibe, budget, and time to tailor trips that fit you." },
+  ], []);
 
   const [index, setIndex] = useState(0);
   const [animDir, setAnimDir] = useState<"next" | "prev">("next");
@@ -102,6 +81,16 @@ export default function Home() {
     return () => { if (intervalRef.current) window.clearInterval(intervalRef.current); };
   }, [isPaused, slides.length]);
 
+  // Function for the "Join Waitlist" shortcut
+  const scrollToSignup = () => {
+    setIsHighlighting(true);
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    inputRef.current?.focus();
+    
+    // Remove the highlight class after animation finishes
+    setTimeout(() => setIsHighlighting(false), 1000);
+  };
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("loading");
@@ -113,15 +102,9 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, origin: origin || "Not Specified" }),
       });
-      
       const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Something went wrong.");
-      }
-
+      if (!res.ok) throw new Error(data.error || "Something went wrong.");
       setStatus("success");
-      // This pulls the "already on waitlist" message from route.ts if applicable
       setMessage(data.message || "You're in! Check your email for your Premium perk. 🎉");
       setEmail("");
     } catch (err: any) {
@@ -148,9 +131,13 @@ export default function Home() {
               <div className="text-[10px] uppercase tracking-widest text-gray-400">Beta Access</div>
             </div>
           </div>
-          <a href="#signup" className="rounded-full bg-black px-5 py-2.5 text-xs font-bold text-white hover:scale-105 transition-transform">
+          {/* TRIGGER: Now calls scrollToSignup instead of just an anchor link */}
+          <button 
+            onClick={scrollToSignup}
+            className="rounded-full bg-black px-5 py-2.5 text-xs font-bold text-white hover:scale-105 transition-transform"
+          >
             Join Waitlist
-          </a>
+          </button>
         </div>
       </header>
 
@@ -170,9 +157,16 @@ export default function Home() {
               Stop endless searching. Get personalized itineraries and smart comparisons in seconds with <b>Tap-to-Plan™</b>.
             </p>
 
-            <form id="signup" onSubmit={onSubmit} className="mt-10 max-w-xl">
-              <div className="flex flex-col gap-3 sm:flex-row">
+            {/* FORM: Now has a ref and a dynamic class for the "opening" animation */}
+            <form 
+              ref={formRef}
+              id="signup" 
+              onSubmit={onSubmit} 
+              className={`mt-10 max-w-xl transition-all duration-500 ${isHighlighting ? "scale-105" : "scale-100"}`}
+            >
+              <div className={`flex flex-col gap-3 sm:flex-row p-1 rounded-[22px] transition-all duration-500 ${isHighlighting ? "ring-4 ring-sky-400/30" : "ring-0"}`}>
                 <input
+                  ref={inputRef}
                   type="email"
                   required
                   value={email}
@@ -215,6 +209,7 @@ export default function Home() {
             </form>
           </div>
 
+          {/* Slider Content */}
           <div className="relative">
             <div 
               className="mx-auto w-full max-w-[340px] overflow-hidden rounded-[3rem] border-[8px] border-white bg-white shadow-[0_32px_64px_-12px_rgba(0,0,0,0.15)]"
@@ -241,14 +236,12 @@ export default function Home() {
                     }`}
                   />
                 </div>
-
                 <div className="absolute bottom-8 left-4 right-4 z-20">
                   <div key={active.caption} className="animate-fadeUp rounded-2xl bg-black/80 p-4 text-center text-sm font-bold text-white backdrop-blur-md">
                     {active.caption}
                   </div>
                 </div>
               </div>
-              
               <div className="flex justify-center gap-2 py-4 bg-white border-t border-gray-50">
                 {slides.map((_, i) => (
                   <div key={i} className={`h-1.5 rounded-full transition-all ${i === index ? "w-6 bg-black" : "w-1.5 bg-gray-200"}`} />
