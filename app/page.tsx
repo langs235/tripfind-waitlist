@@ -172,10 +172,16 @@ export default function Home() {
 
           {/* Video Preview Container */}
           <div className="relative">
+            {/* ✅ Improvement 1: Added label above the frame */}
+            <p className="mb-4 text-center text-sm font-bold uppercase tracking-widest text-gray-400">
+              Product Preview
+            </p>
+
             <div 
               className="mx-auto w-full max-w-[340px] overflow-hidden rounded-[3rem] border-[8px] border-white bg-white shadow-[0_32px_64px_-12px_rgba(0,0,0,0.15)]"
             >
-              <div className="relative h-[600px] w-full bg-gray-50">
+              {/* ✅ Improvement 2: Switched from fixed h-[600px] to aspect-ratio to fit standard phone video sizes better without cropping */}
+              <div className="relative aspect-[9/19.5] w-full bg-black">
                 <video
                   autoPlay
                   muted
@@ -188,7 +194,8 @@ export default function Home() {
                 </video>
                 
                 {/* Floating Action Badge */}
-                <div className="absolute bottom-8 left-4 right-4 z-20">
+                {/* ✅ Improvement 3: Moved lower by changing bottom-8 to bottom-4 */}
+                <div className="absolute bottom-4 left-4 right-4 z-20">
                   <div className="animate-fadeUp rounded-2xl bg-black/80 p-4 text-center text-sm font-bold text-white backdrop-blur-md">
                     Planning your trip in 30 seconds...
                   </div>
