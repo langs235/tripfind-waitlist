@@ -172,7 +172,6 @@ export default function Home() {
 
           {/* Video Preview Container */}
           <div className="relative">
-            {/* ✅ Improvement 1: Added label above the frame */}
             <p className="mb-4 text-center text-sm font-bold uppercase tracking-widest text-gray-400">
               Product Preview
             </p>
@@ -180,21 +179,23 @@ export default function Home() {
             <div 
               className="mx-auto w-full max-w-[340px] overflow-hidden rounded-[3rem] border-[8px] border-white bg-white shadow-[0_32px_64px_-12px_rgba(0,0,0,0.15)]"
             >
-              {/* ✅ Improvement 2: Switched from fixed h-[600px] to aspect-ratio to fit standard phone video sizes better without cropping */}
+              {/* ✅ Updated approach: Use a standard aspect ratio and a cover bar for a perfect fit */}
               <div className="relative aspect-[9/19.5] w-full bg-black">
+                {/* This black bar covers the status bar area from the video */}
+                <div className="absolute top-0 left-0 right-0 h-8 bg-black z-10"></div>
+                
                 <video
                   autoPlay
                   muted
                   loop
                   playsInline
-                  className="h-full w-full object-cover"
+                  className="absolute inset-0 h-full w-full object-cover"
                 >
                   <source src="/productpreview.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
                 
                 {/* Floating Action Badge */}
-                {/* ✅ Improvement 3: Moved lower by changing bottom-8 to bottom-4 */}
                 <div className="absolute bottom-4 left-4 right-4 z-20">
                   <div className="animate-fadeUp rounded-2xl bg-black/80 p-4 text-center text-sm font-bold text-white backdrop-blur-md">
                     Planning your trip in 30 seconds...
