@@ -105,19 +105,28 @@ export default function Home() {
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("loading");
+    setMessage("");
+
     try {
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, origin: origin || "Not Specified" }),
       });
-      if (!res.ok) throw new Error();
+      
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Something went wrong.");
+      }
+
       setStatus("success");
-      setMessage("You're in! Check your email for your Premium perk. 🎉");
+      // This pulls the "already on waitlist" message from route.ts if applicable
+      setMessage(data.message || "You're in! Check your email for your Premium perk. 🎉");
       setEmail("");
-    } catch {
+    } catch (err: any) {
       setStatus("error");
-      setMessage("Something went wrong. Please try again.");
+      setMessage(err.message || "Something went wrong. Please try again.");
     }
   }
 
@@ -276,7 +285,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* RESTORED CONTACT & INSTAGRAM LINKS */}
       <footer className="border-t border-gray-100 py-16 text-center">
         <div className="mb-8 flex justify-center gap-8 text-xs font-bold uppercase tracking-widest text-gray-500">
           <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-black transition-colors">Instagram</a>
