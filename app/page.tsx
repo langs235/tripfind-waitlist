@@ -136,7 +136,7 @@ export default function Home() {
             onClick={scrollToSignup}
             className="rounded-full bg-black px-5 py-2.5 text-xs font-bold text-white hover:scale-105 transition-transform"
           >
-            Join Waitlist
+            Get Early Access
           </button>
         </div>
       </header>
