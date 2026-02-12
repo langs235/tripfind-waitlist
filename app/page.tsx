@@ -8,12 +8,6 @@ const font = Plus_Jakarta_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
-type Slide = {
-  src: string;
-  alt: string;
-  caption: string;
-};
-
 type Quote = {
   text: string;
   author: string;
@@ -39,13 +33,6 @@ export default function Home() {
   const contactEmail = "info@tripfind.net";
   const instagramUrl = "https://www.instagram.com/tripfind.app?igsh=ZWUwaDQ2d2RhbWlw";
 
-  const slides: Slide[] = useMemo(() => [
-    { src: "/preview-1.jpg", alt: "Discover", caption: "1. Browse hand-picked gems" },
-    { src: "/preview-2.png", alt: "Compare", caption: "2. Explore better alternatives" },
-    { src: "/preview-5.jpg", alt: "Tap Plan", caption: "3. One tap, complete itinerary" },
-    { src: "/preview-3.jpg", alt: "Ready", caption: "4. Your trip is ready to go" },
-  ], []);
-
   const quotes: Quote[] = useMemo(() => [
     { text: "I found a weekend trip in 3 minutes that actually matched my budget.", author: "— Beta user" },
     { text: "The Tap-to-Plan feature is crazy. This should already exist.", author: "— Early tester" },
@@ -58,28 +45,6 @@ export default function Home() {
     { q: "Is TripFind free?", a: "Yes — the core experience is free. Premium adds extra features and perks." },
     { q: "How does personalization work?", a: "We learn from your vibe, budget, and time to tailor trips that fit you." },
   ], []);
-
-  const [index, setIndex] = useState(0);
-  const [animDir, setAnimDir] = useState<"next" | "prev">("next");
-  const [isPaused, setIsPaused] = useState(false);
-  const intervalRef = useRef<number | null>(null);
-  const pointerDownRef = useRef<{ x: number; y: number } | null>(null);
-
-  const next = () => {
-    setAnimDir("next");
-    setIndex((prev) => (prev + 1) % slides.length);
-  };
-
-  const prev = () => {
-    setAnimDir("prev");
-    setIndex((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  useEffect(() => {
-    if (isPaused) return;
-    intervalRef.current = window.setInterval(next, 4000);
-    return () => { if (intervalRef.current) window.clearInterval(intervalRef.current); };
-  }, [isPaused, slides.length]);
 
   // Function for the "Join Waitlist" shortcut
   const scrollToSignup = () => {
@@ -113,8 +78,6 @@ export default function Home() {
     }
   }
 
-  const active = slides[index];
-
   return (
     <main className={`${font.className} min-h-screen bg-white text-black pb-24 sm:pb-0`}>
       <div className="pointer-events-none fixed inset-0 -z-10">
@@ -131,7 +94,6 @@ export default function Home() {
               <div className="text-[10px] uppercase tracking-widest text-gray-400">Beta Access</div>
             </div>
           </div>
-          {/* TRIGGER: Now calls scrollToSignup instead of just an anchor link */}
           <button 
             onClick={scrollToSignup}
             className="rounded-full bg-black px-5 py-2.5 text-xs font-bold text-white hover:scale-105 transition-transform"
@@ -157,7 +119,6 @@ export default function Home() {
               Stop endless searching. Get personalized itineraries and smart comparisons in seconds with <b>Tap-to-Plan™</b>.
             </p>
 
-            {/* FORM: Now has a ref and a dynamic class for the "opening" animation */}
             <form 
               ref={formRef}
               id="signup" 
@@ -209,43 +170,29 @@ export default function Home() {
             </form>
           </div>
 
-          {/* Slider Content */}
+          {/* Video Preview Container */}
           <div className="relative">
             <div 
               className="mx-auto w-full max-w-[340px] overflow-hidden rounded-[3rem] border-[8px] border-white bg-white shadow-[0_32px_64px_-12px_rgba(0,0,0,0.15)]"
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
             >
-              <div 
-                className="relative h-[600px] w-full bg-gray-50"
-                onPointerDown={(e) => { pointerDownRef.current = { x: e.clientX, y: e.clientY } }}
-                onPointerUp={(e) => {
-                  if (!pointerDownRef.current) return;
-                  const dx = e.clientX - pointerDownRef.current.x;
-                  pointerDownRef.current = null;
-                  if (Math.abs(dx) > 40) dx < 0 ? next() : prev();
-                }}
-              >
-                <div className="absolute inset-0">
-                  <img
-                    key={active.src}
-                    src={active.src}
-                    alt={active.alt}
-                    className={`h-full w-full object-contain p-4 transition-all duration-700 ${
-                      animDir === "next" ? "animate-slideInRight" : "animate-slideInLeft"
-                    }`}
-                  />
-                </div>
+              <div className="relative h-[600px] w-full bg-gray-50">
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="h-full w-full object-cover"
+                >
+                  <source src="/productpreview.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                
+                {/* Floating Action Badge */}
                 <div className="absolute bottom-8 left-4 right-4 z-20">
-                  <div key={active.caption} className="animate-fadeUp rounded-2xl bg-black/80 p-4 text-center text-sm font-bold text-white backdrop-blur-md">
-                    {active.caption}
+                  <div className="animate-fadeUp rounded-2xl bg-black/80 p-4 text-center text-sm font-bold text-white backdrop-blur-md">
+                    Planning your trip in 30 seconds...
                   </div>
                 </div>
-              </div>
-              <div className="flex justify-center gap-2 py-4 bg-white border-t border-gray-50">
-                {slides.map((_, i) => (
-                  <div key={i} className={`h-1.5 rounded-full transition-all ${i === index ? "w-6 bg-black" : "w-1.5 bg-gray-200"}`} />
-                ))}
               </div>
             </div>
           </div>
@@ -287,20 +234,10 @@ export default function Home() {
       </footer>
 
       <style jsx global>{`
-        @keyframes slideInRight {
-          from { opacity: 0; transform: translateX(20px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInLeft {
-          from { opacity: 0; transform: translateX(-20px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        .animate-slideInRight { animation: slideInRight 0.5s ease-out forwards; }
-        .animate-slideInLeft { animation: slideInLeft 0.5s ease-out forwards; }
         .animate-fadeUp { animation: fadeUp 0.4s ease-out forwards; }
         html { scroll-behavior: smooth; }
       `}</style>
