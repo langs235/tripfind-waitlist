@@ -66,7 +66,7 @@ export async function POST(req) {
               <h2 style="margin-bottom:16px;">You're officially on the TripFind waitlist</h2>
               <p>Thanks for signing up for <strong>TripFind</strong>.</p>
               <p>We’re building a smarter way to plan trips—no endless tabs, no overwhelm, just personalized travel in seconds.</p>
-              <p>As an early subscriber, you’ll receive <strong>one month of Premium completely free</strong> when we launch.</p>
+              <p>As an early subscriber, you’ll receive <strong>one month of Premium completely free</strong> when we launch. You are getting this message because  you have subscribed through the website form, or through the survey conducted.</p>
               <p>We’ll let you know as soon as TripFind goes live 🚀</p>
               <p style="margin-top:32px; border-top: 1px solid #eee; padding-top: 24px;">
                 <strong>The TripFind Team</strong><br/>
