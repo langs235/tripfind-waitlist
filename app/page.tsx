@@ -163,7 +163,7 @@ export default function Home() {
               </div>
 
               <div className="mt-6 px-2">
-                <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400">
+                <p className="text-sm font-bold uppercase tracking-widest text-gray-600">
                   Join 100+ others already on the list.
                 </p>
               </div>
@@ -185,17 +185,12 @@ export default function Home() {
             <div 
               className="mx-auto w-full max-w-[340px] overflow-hidden rounded-[3rem] border-[8px] border-white bg-white shadow-[0_32px_64px_-12px_rgba(0,0,0,0.15)]"
             >
-              {/* ✅ FIX: Removed the black bar. Used scale and translate to crop the status bar naturally. */}
               <div className="relative aspect-[9/19] w-full bg-black overflow-hidden">
                 <video
                   autoPlay
                   muted
                   loop
                   playsInline
-                  /* scale-[1.05]: Zooms in 5% to make sure edges are covered.
-                      -translate-y-4: Moves the video UP by 1rem (16px), pushing the top status bar out of the frame.
-                      object-cover: Ensures the video fills the container completely.
-                  */
                   className="h-full w-full object-cover scale-[1.05] -translate-y-4"
                 >
                   <source src="/productpreview.mp4" type="video/mp4" />
