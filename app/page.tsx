@@ -162,6 +162,12 @@ export default function Home() {
                 </div>
               </div>
 
+              <div className="mt-6 px-2">
+                <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400">
+                  Join 100+ others already on the list.
+                </p>
+              </div>
+
               {message && (
                 <p className={`mt-4 text-sm font-bold ${status === "success" ? "text-emerald-600" : "text-red-500"}`}>
                   {message}
@@ -187,8 +193,8 @@ export default function Home() {
                   loop
                   playsInline
                   /* scale-[1.05]: Zooms in 5% to make sure edges are covered.
-                     -translate-y-4: Moves the video UP by 1rem (16px), pushing the top status bar out of the frame.
-                     object-cover: Ensures the video fills the container completely.
+                      -translate-y-4: Moves the video UP by 1rem (16px), pushing the top status bar out of the frame.
+                      object-cover: Ensures the video fills the container completely.
                   */
                   className="h-full w-full object-cover scale-[1.05] -translate-y-4"
                 >
