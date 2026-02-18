@@ -35,7 +35,7 @@ export default function Home() {
 
   const quotes: Quote[] = useMemo(() => [
     { text: "I found a weekend trip in 3 minutes that actually matched my budget.", author: "— Beta user" },
-    { text: "Your app looks great thoug. Honestly, well done!", author: "— Early tester" },
+    { text: "Your app looks great though. Honestly, well done!", author: "— Early tester" },
     { text: "You couldn't have sent this to a better person. I'd be traveling constantly if I could, but the prices lately have been just terrible!", author: "— Waitlist member" },
     { text: "I hate tab-hopping. This makes planning feel effortless.", author: "— Early tester" },
   ], []);
